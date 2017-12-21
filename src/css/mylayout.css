@@ -1,0 +1,115 @@
+.dropdown-link {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.dropdown-link:hover {
+	cursor: pointer;
+	background-color: #e6f7ff;
+}
+
+.Header {
+	padding: 0px;
+	background-color: white;
+	margin-left: 256px;
+	position: fixed;
+	width: 100%;
+	display: flex;
+	flex: 1;
+}
+
+.HeaderMini {
+	padding: 0px;
+	background-color: white;
+	margin-left: 80px;
+	position: fixed;
+	width: 100%;
+	display: flex;
+	flex: 1;
+}
+
+.HeaderRight {
+	/*background-color: red;*/
+	display: inline-flex;
+	flex-direction: row-reverse;
+	padding-right: 256px;
+	margin-right: 24px;
+	/*flex: 1;*/
+}
+
+.HeaderRightMini {
+	/*background-color: red;*/
+	display: inline-flex;
+	flex-direction: row-reverse;
+	padding-right: 80px;
+	margin-right: 24px;
+	/*flex: 1;*/
+}
+
+.HeaderLeft {
+	flex: 1;
+	font-size: 21px;
+	font-weight: 500;
+}
+
+.Content {
+	margin-left: 256px;
+	margin-top: 64px;
+	display: flex;
+	flex: 1;
+}
+
+.ContentMini {
+	margin-left: 80px;
+	margin-top: 64px;
+	display: flex;
+	flex: 1;
+}
+
+
+.Footer {
+	text-align: center;
+	margin-left: 256px;
+}
+
+.FooterMini {
+	text-align: center;
+	margin-left: 80px;
+}
+
+.LogoAreaMini {
+	background-color: #002140;
+	height: 64px;
+	/*line-height: 64px;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.LogoArea {
+	background-color: #002140;
+	height: 64px;
+	padding-left: 24px;
+	line-height: 64px;
+	/*	display: flex;
+	align-items: center;
+	justify-content: center;*/
+}
+
+.Logo {
+	width: 100px;
+	height: 15px;
+}
+
+.trigger {
+	font-size: 18px;
+	line-height: 64px;
+	padding: 0 24px;
+	cursor: pointer;
+	transition: color .3s;
+}
+
+.trigger:hover {
+	color: #1890ff;
+}

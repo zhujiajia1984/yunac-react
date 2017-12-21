@@ -1,0 +1,29 @@
+.container {
+	background-color: white;
+	margin-bottom: 24px;
+}
+
+.ant-card-body {
+	padding-bottom: 8px;
+}
+
+.contentWrapper {
+	display: flex;
+	flex-direction: column;
+	/*background-color: red;*/
+}
+
+.HomeCardHeader {
+	display: flex;
+	flex-direction: column;
+}
+
+.HomeCardContent {
+	display: flex;
+	flex-direction: column;
+}
+
+.HomeCardFooter {
+	display: flex;
+	flex-direction: column;
+}

@@ -1,0 +1,13 @@
+.pageWrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.pageContent {
+	padding-left: 24px;
+	padding-right: 24px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
