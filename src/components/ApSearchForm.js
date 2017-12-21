@@ -142,7 +142,7 @@ class ApSearchForm extends React.Component {
 								</FormItem>
 							</Col>
 						</Row>
-						<Row>
+						<Row style={{marginBottom: 15}}>
 							<Col span={24} style={{ textAlign: 'right' }}>
 							<Button type="primary" htmlType="submit">查询</Button>
 							<Button style={{ marginLeft: 15 }} onClick={this.onClear.bind(this)}>清空</Button>
