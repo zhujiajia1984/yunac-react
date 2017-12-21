@@ -28,33 +28,30 @@ class ApManageTable extends React.Component {
 			data: data,
 			selectedRowKeys: [],
 			updateDlgVisible: false,
-			updateLoading: false
+			updateLoading: false,
+			pagination: {
+				defaultCurrent: 1,
+				defaultPageSize: 5,
+			},
 		}
 	}
 
 	//
 	componentDidMount() {
 		this.setState({ isLoading: true });
+		const devNames = ['XIN-58-六接口', '财务GNBE', '办公楼一楼会议室'];
+		const devGroups = ['Brown', 'Green', 'Black'];
+		const devStatusArray = ['Online', 'Offline'];
 		setTimeout(() => {
-			data = [{
-				key: '1',
-				devName: 'XIN-58-六接口',
-				devGroup: 'Brown',
-				devStatus: 'Online',
-				regTime: '2017-01-30 15:12:12',
-			}, {
-				key: '2',
-				devName: '财务GNBE',
-				devGroup: 'Green',
-				devStatus: 'Online',
-				regTime: '2017-01-02 15:12:12',
-			}, {
-				key: '3',
-				devName: '办公楼一楼会议室',
-				devGroup: 'Black',
-				devStatus: 'Offline',
-				regTime: '2017-01-02 15:12:12',
-			}];
+			for (let i = 0; i < 100; i++) {
+				data.push({
+					key: i.toString(),
+					devName: devNames[i % 3],
+					devGroup: devGroups[i % 3],
+					devStatus: devStatusArray[i % 2],
+					regTime: '2017-01-30 15:12:1' + (i % 9),
+				})
+			}
 			this.setState({ isLoading: false, data: data });
 		}, 2000)
 	}
@@ -109,10 +106,17 @@ class ApManageTable extends React.Component {
 	}
 
 	//
+	onTableChange(pagination, filters, sorter) {
+		console.log(pagination);
+		console.log(filters);
+		console.log(sorter);
+	}
+
+	//
 	render() {
 		const selectedRowKeys = this.state.selectedRowKeys;
 		return (
-			<div style={{paddingLeft: 24, paddingRight: 24}}>
+			<div>
 				<Modal
 					visible={this.state.updateDlgVisible}
 					title="固件升级"
@@ -135,10 +139,15 @@ class ApManageTable extends React.Component {
 					bordered={true}
 					dataSource={data}
 					loading={this.state.isLoading}
+					expandedRowRender={(record) => {
+						return <p style={{ margin: 0 }}>{record.devName}</p>
+					}}
 					rowSelection={{
 						selectedRowKeys,
 						onChange: this.onSelectChange.bind(this),
 					}}
+					pagination={this.state.pagination}
+					onChange={this.onTableChange.bind(this)}
 				>
 					<Column
 						title="设备名称"

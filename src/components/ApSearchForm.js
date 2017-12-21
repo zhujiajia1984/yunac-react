@@ -53,7 +53,6 @@ class ApSearchForm extends React.Component {
 		return (
 			<Form layout={"inline"}
 				onSubmit={this.onSearch.bind(this)}
-				style={{paddingLeft: 24, paddingRight: 24}}
 			>
 				<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom:15}}>
 					<Col xs={24} sm={24} md={12} lg={12} xl={8}>

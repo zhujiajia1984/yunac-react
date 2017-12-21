@@ -30,10 +30,10 @@ export default class ApManage extends React.Component {
 						<div className="pageApBody">
 							<Tabs defaultActiveKey="1">
 								<TabPane tab="AP列表" key="1">
-									<div style={{paddingLeft:24, paddingRight:24, marginBottom: 15}}>
-										<span>设备总数：</span><span style={{marginRight: 16, color:'black'}}>103</span>
-										<span>在线数量：</span><span style={{marginRight: 16, color:'#87d068'}}>100</span>
-										<span>离线数量：</span><span style={{marginRight: 16, color:'#ff5500'}}>3</span>
+									<div style={{marginBottom: 15, fontSize: 12}}>
+										<span>设备总数：</span><span style={{marginRight: 16}}>103</span>
+										<span>在线数量：</span><span style={{marginRight: 16}}>100</span>
+										<span>离线数量：</span><span style={{marginRight: 16}}>3</span>
 									</div>
 									<ApSearchFormWrapper></ApSearchFormWrapper>
 									<ApManageTableWrapper></ApManageTableWrapper>
