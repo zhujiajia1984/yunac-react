@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import PwdReset from './pages/PwdReset';
 import Profile from './pages/Profile';
 import EditPwd from './pages/EditPwd';
+import ApSetting from './pages/ApSetting';
 
 //
 export default class App extends React.Component {
@@ -24,6 +25,7 @@ export default class App extends React.Component {
 					<Route path="/pwdReset" component={PwdReset} />
 					<Route path="/index" component={Home} />
 					<Route path="/apManage" component={ApManager} />
+					<Route path="/peizhi" component={ApSetting} />
 					<Route path="/groupManage" component={GroupManager} />
 					<Route path="/apUser" component={ApUser} />
 					<Route path="/profile" component={Profile} />

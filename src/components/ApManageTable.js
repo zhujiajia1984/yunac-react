@@ -128,7 +128,7 @@ class ApManageTable extends React.Component {
 							</MenuItem>
 							<MenuItem key="reboot">
 								<Popconfirm title="确认重启该设备吗？" 
-									okText="立即重启" 
+									okText="确认" 
 									cancelText="取消"
 									onConfirm={this.onReboot.bind(this, record)}
 								>
@@ -140,7 +140,13 @@ class ApManageTable extends React.Component {
 							</MenuItem>
 							<Menu.Divider />
 							<MenuItem key="deleteDev">
-								<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>删除设备</a>
+								<Popconfirm title="确认删除该设备吗？" 
+									okText="确认" 
+									cancelText="取消"
+									onConfirm={this.onDeleteDev.bind(this, record)}
+								>
+									<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>删除设备</a>
+								</Popconfirm>
 							</MenuItem>
 						</Menu>
 					} trigger={['click']}
@@ -190,6 +196,17 @@ class ApManageTable extends React.Component {
 			default:
 				// alert("menu unknow");
 				break;
+		}
+	}
+
+	//
+	onMutiOperate(values) {
+		switch (values.key) {
+			default: this.setState({ isLoading: true });
+			setTimeout(() => {
+				this.setState({ isLoading: false, updateDlgVisible: true });
+			}, 500)
+			break;
 		}
 	}
 
@@ -248,6 +265,15 @@ class ApManageTable extends React.Component {
 		this.setState({ isLoading: true });
 		setTimeout(() => {
 			message.success('已成功发送重启指令');
+			this.setState({ isLoading: false });
+		}, 1000)
+	}
+
+	//
+	onDeleteDev() {
+		this.setState({ isLoading: true });
+		setTimeout(() => {
+			message.success('已成功删除此设备');
 			this.setState({ isLoading: false });
 		}, 1000)
 	}
@@ -444,7 +470,7 @@ class ApManageTable extends React.Component {
 						>下发配置</Button>
 						<Dropdown.Button 
 							overlay={
-								<Menu>
+								<Menu onClick={this.onMutiOperate.bind(this)}>
 									<MenuItem key="reboot">
 										<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>远程重启</a>
 									</MenuItem>
@@ -480,7 +506,7 @@ class ApManageTable extends React.Component {
 								<Option value="6">7</Option>
 								<Option value="15">15</Option>
 								<Option value="30">30</Option>
-								<Option value="all">所有</Option>
+								<Option value="50">50</Option>
 							</Select>
 						</div>
 						<div>
@@ -545,7 +571,7 @@ class ApManageTable extends React.Component {
 							type="primary"
 							loading={this.state.updateLoading}
 							onClick={this.updateConfirm.bind(this)}
-						>立即重启
+						>确认
 						</Button>
 					]}
 				>

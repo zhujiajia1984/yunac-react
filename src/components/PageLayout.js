@@ -43,6 +43,15 @@ class PageLayout extends React.Component {
 	}
 
 	//
+	onTopMenuChange(item) {
+		if (item.key == "peizhi") {
+			this.props.history.push("/peizhi");
+		} else if (item.key == "ap") {
+			this.props.history.push("/apManage");
+		}
+	}
+
+	//
 	render() {
 		return (
 			<Layout style={{minHeight: '100vh'}}>
@@ -101,10 +110,12 @@ class PageLayout extends React.Component {
 						<div className="HeaderLeft">
 							<Menu
 								mode="horizontal"
-								defaultSelectedKeys={["ap"]}
+								defaultSelectedKeys={[this.props.defaultMenuKey]}
+								onClick={this.onTopMenuChange.bind(this)}
 							>
-								<Item key="ap">AP列表</Item>
-								<Item key="peizhi">配置管理</Item>
+								{this.props.menuTops.map((item)=>{
+									return <Item key={item.key}>{item.title}</Item>
+								})}
 							</Menu>
 						</div>
 						<div className={(this.state.collapsed)?"HeaderRightMini":"HeaderRight"}>
@@ -151,11 +162,15 @@ PageLayout.propTypes = {
 	subMenu: PropTypes.array.isRequired,
 	location: PropTypes.object,
 	history: PropTypes.object,
+	defaultMenuKey: PropTypes.string,
+	menuTops: PropTypes.array,
 };
 
 PageLayout.defaultProps = {
 	selMenu: ['系统首页'],
-	subMenu: ['']
+	subMenu: [],
+	defaultMenuKey: '',
+	menuTops: [],
 };
 
 //

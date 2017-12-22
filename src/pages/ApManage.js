@@ -1,13 +1,11 @@
 import React from 'react';
-import { Tabs } from 'antd';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import PageHeader from '../components/PageHeader';
 import cssApManage from './ApManage.css';
 import ApSearchFormWrapper from '../components/ApSearchForm';
 import ApManageTableWrapper from '../components/ApManageTable';
 
-// const
-const TabPane = Tabs.TabPane;
+
 
 //
 export default class ApManage extends React.Component {
@@ -31,9 +29,16 @@ export default class ApManage extends React.Component {
 			</div>
 		)
 		return (
-			<PageLayoutContainer selMenu={["AP管理"]} subMenu={["设备管理", "用户管理"]}>
+			<PageLayoutContainer 
+				selMenu={["AP管理"]}
+				subMenu={["设备管理", "用户管理"]}
+				menuTops={[
+					{key: 'ap', title: 'AP列表', link: '/apManage'},
+					{key: 'peizhi', title: '配置管理', link: '/peizhi'}
+				]}
+				defaultMenuKey="ap"
+			>
 				<div className="pageWrapper">
-					
 					<div className="pageApContent">
 						<div className="pageApBody">
 							<ApSearchFormWrapper></ApSearchFormWrapper>
