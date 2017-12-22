@@ -53,6 +53,7 @@ class ApSearchForm extends React.Component {
 		return (
 			<Form layout={"inline"}
 				onSubmit={this.onSearch.bind(this)}
+				style={{marginTop: 16}}
 			>
 				<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom:15}}>
 					<Col xs={24} sm={24} md={12} lg={12} xl={8}>
@@ -63,9 +64,9 @@ class ApSearchForm extends React.Component {
 						</FormItem>
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-						<FormItem label={"设备类型"} className="ApSearchItem" style={{display: 'flex'}}>
+						<FormItem label={"设备型号"} className="ApSearchItem" style={{display: 'flex'}}>
 							{getFieldDecorator('type')(
-								<Input placeholder="请输入设备类型" />
+								<Input placeholder="请输入设备型号" />
 							)}
 						</FormItem>
 					</Col>

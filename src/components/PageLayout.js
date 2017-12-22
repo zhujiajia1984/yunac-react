@@ -98,7 +98,15 @@ class PageLayout extends React.Component {
 							type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
 							onClick={this.toggleSider.bind(this)}
 						/>
-						<div className="HeaderLeft"></div>
+						<div className="HeaderLeft">
+							<Menu
+								mode="horizontal"
+								defaultSelectedKeys={["ap"]}
+							>
+								<Item key="ap">AP列表</Item>
+								<Item key="peizhi">配置管理</Item>
+							</Menu>
+						</div>
 						<div className={(this.state.collapsed)?"HeaderRightMini":"HeaderRight"}>
 							<div style={{height: '100%', display:'flex'}}>
 								<Dropdown overlay={
