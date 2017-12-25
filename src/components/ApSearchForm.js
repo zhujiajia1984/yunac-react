@@ -96,7 +96,7 @@ class ApSearchForm extends React.Component {
 					?<div>
 						<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom:15}}>
 							<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-								<FormItem label={"客户名称"} className="ApSearchItem" style={{display: 'flex'}}>
+								<FormItem label={"所属客户"} className="ApSearchItem" style={{display: 'flex'}}>
 									{getFieldDecorator('clientName')(
 										<Input placeholder="请输入客户名称" />
 									)}

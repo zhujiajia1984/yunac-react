@@ -17,6 +17,7 @@ import {
 	Col,
 } from 'antd';
 import { withRouter } from 'react-router';
+import EditableTableCell from '../components/EditableTableCell';
 
 // const
 // const Column = Table;
@@ -64,6 +65,12 @@ class ApManageTable extends React.Component {
 	}
 
 	//
+	onSaveDevName(name) {
+		// alert(name);
+		// fetch上传数据
+	}
+
+	//
 	componentDidMount() {
 		//
 		let columns = [{
@@ -71,13 +78,40 @@ class ApManageTable extends React.Component {
 			dataIndex: "devName",
 			sorter: (a, b) => {
 				return (a.devName.length - b.devName.length);
-			}
+			},
+			render: (text, record, index) => {
+				return <EditableTableCell
+							type="input"
+							value={text}
+							onSaveText={this.onSaveDevName.bind(this)}
+				></EditableTableCell>
+			},
 		}, {
 			title: "设备分组",
 			dataIndex: "devGroup",
 			sorter: (a, b) => {
 				return (a.devGroup.length - b.devGroup.length);
-			}
+			},
+			render: (text, record, index) => {
+				return <EditableTableCell
+							type="select"
+							value={text}
+							onSaveText={this.onSaveDevName.bind(this)}
+				></EditableTableCell>
+			},
+		}, {
+			title: "设备型号",
+			dataIndex: "devType",
+			sorter: (a, b) => {
+				return (a.devType.length - b.devType.length);
+			},
+			render: (text, record, index) => {
+				return <EditableTableCell
+							type="select"
+							value={text}
+							onSaveText={this.onSaveDevName.bind(this)}
+				></EditableTableCell>
+			},
 		}, {
 			title: "所属客户",
 			dataIndex: "clientName",
@@ -119,12 +153,15 @@ class ApManageTable extends React.Component {
 			dataIndex: "action",
 			render: (text, record, index) => {
 				return <div>
-					<a href="javascript:;">配置</a>
+					<a href="javascript:;">监控</a>
 					<Divider type="vertical" />
 					<Dropdown overlay={
 						<Menu onClick={this.onRefresh.bind(this, record)}>
 							<MenuItem key="refresh">
 								<a style={{marginLeft: 1, display:'inline-block'}}>同步数据</a>
+							</MenuItem>
+							<MenuItem key="devSetting">
+								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程配置</a>
 							</MenuItem>
 							<MenuItem key="reboot">
 								<Popconfirm title="确认重启该设备吗？" 
@@ -171,7 +208,8 @@ class ApManageTable extends React.Component {
 					devStatus: devStatusArray[i % 2],
 					regTime: '2017-01-30 15:12:1' + (i % 9),
 					clientName: '测试' + i,
-					devMac: 'ef:01:02:ed:33:4' + (i % 10)
+					devMac: 'ef:01:02:ed:33:4' + (i % 10),
+					devType: 'DB6000-W2'
 				})
 			}
 			this.setState({ isLoading: false, data: data });
@@ -482,7 +520,7 @@ class ApManageTable extends React.Component {
 										<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>修改分组</a>
 									</MenuItem>
 									<MenuItem key="moveClient">
-										<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>分配设备</a>
+										<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>修改客户</a>
 									</MenuItem>
 									<MenuItem key="deleteDev">
 										<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>删除设备</a>
@@ -525,7 +563,7 @@ class ApManageTable extends React.Component {
 										>设备名称</Checkbox>
 									</MenuItem>
 									<MenuItem key="devType">
-										<Checkbox>设备型号</Checkbox>
+										<Checkbox checked>设备型号</Checkbox>
 									</MenuItem>
 									<MenuItem key="devGroup">
 										<Checkbox checked>设备分组</Checkbox>
@@ -551,8 +589,8 @@ class ApManageTable extends React.Component {
 									</MenuItem>
 								</Menu>
 								}
-								visible={this.state.colMenuVisible}
-								onVisibleChange={this.onVisibleChange.bind(this)}
+								// visible={this.state.colMenuVisible}
+								// onVisibleChange={this.onVisibleChange.bind(this)}
 								trigger={['click']}
 							>
 								<Button style={{ marginRight: 8 }}><Icon type="appstore" />自定义列</Button>

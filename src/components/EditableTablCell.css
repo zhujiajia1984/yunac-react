@@ -1,0 +1,35 @@
+.editCellWrapper {
+	display: flex;
+	flex: 1;
+}
+
+.editCell {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+}
+
+.editIconWrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: row-reverse;
+}
+
+.editCellWrapper:hover .editIcon {
+	display: flex;
+}
+
+.editIcon {
+	display: none;
+}
+
+.editIcon:hover {
+	color: #108ee9;
+	cursor: pointer;
+}
+
+.oprationIcon {
+	margin-left: 5px;
+	cursor: pointer;
+}
