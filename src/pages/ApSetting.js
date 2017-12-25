@@ -1,5 +1,6 @@
 import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
+import ApSettingTable from '../components/ApSettingTable';
 
 //
 export default class ApSetting extends React.Component {
@@ -16,15 +17,16 @@ export default class ApSetting extends React.Component {
 					selMenu={["AP管理"]}
 					subMenu={["设备管理", "用户管理"]}
 					menuTops={[
-						{key: 'ap', title: 'AP列表', link: '/apManage'},
-						{key: 'peizhi', title: '配置管理', link: '/peizhi'}
+						{key: 'ap', title: 'AP状态管理', link: '/apManage'},
+						{key: 'peizhi', title: '配置文件管理', link: '/peizhi'},
+						{key: 'apType', title: 'AP型号管理', link: '/apType'}
 					]}
 					defaultMenuKey="peizhi"
 				>
 					<div className="pageWrapper">
 						<div className="pageApContent">
 							<div className="pageApBody">
-								body
+								<ApSettingTable></ApSettingTable>
 							</div>
 						</div>
 					</div>

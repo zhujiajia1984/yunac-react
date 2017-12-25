@@ -9,6 +9,9 @@ import PwdReset from './pages/PwdReset';
 import Profile from './pages/Profile';
 import EditPwd from './pages/EditPwd';
 import ApSetting from './pages/ApSetting';
+import TzManage from './pages/TzManage';
+import ApType from './pages/ApType';
+import TzType from './pages/TzType';
 
 //
 export default class App extends React.Component {
@@ -26,6 +29,9 @@ export default class App extends React.Component {
 					<Route path="/index" component={Home} />
 					<Route path="/apManage" component={ApManager} />
 					<Route path="/peizhi" component={ApSetting} />
+					<Route path="/apType" component={ApType} />
+					<Route path="/tzManage" component={TzManage} />
+					<Route path="/tzType" component={TzType} />
 					<Route path="/groupManage" component={GroupManager} />
 					<Route path="/apUser" component={ApUser} />
 					<Route path="/profile" component={Profile} />

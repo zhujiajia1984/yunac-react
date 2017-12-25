@@ -31,6 +31,11 @@ export default class PageLayoutContainer extends React.Component {
 					icon: 'laptop',
 					path: '/apManage'
 				}, {
+					name: '探针管理',
+					type: 'main',
+					icon: 'laptop',
+					path: '/tzManage'
+				}, {
 					name: '分组管理',
 					type: 'main',
 					icon: 'laptop',

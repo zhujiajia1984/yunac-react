@@ -41,7 +41,7 @@ const devMacCol = {
 }
 
 //
-class ApManageTable extends React.Component {
+class TzManageTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -153,15 +153,10 @@ class ApManageTable extends React.Component {
 			dataIndex: "action",
 			render: (text, record, index) => {
 				return <div>
-					<a href="javascript:;">监控</a>
-					<Divider type="vertical" />
 					<Dropdown overlay={
 						<Menu onClick={this.onRefresh.bind(this, record)}>
 							<MenuItem key="refresh">
 								<a style={{marginLeft: 1, display:'inline-block'}}>同步数据</a>
-							</MenuItem>
-							<MenuItem key="devSetting">
-								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程配置</a>
 							</MenuItem>
 							<MenuItem key="reboot">
 								<Popconfirm title="确认重启该设备吗？" 
@@ -188,7 +183,7 @@ class ApManageTable extends React.Component {
 						</Menu>
 					} trigger={['click']}
 					>
-						<a href="javascript:;">更多<Icon type="down" /></a>
+						<a href="javascript:;">管理<Icon type="down" /></a>
 					</Dropdown>
 				</div>
 			}
@@ -403,13 +398,11 @@ class ApManageTable extends React.Component {
 					<Row gutter={16} style={{marginBottom: 10}}>
 						<Col span={6}>
 							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-								SSID名称：
+								数据输出IP：
 							</div>
 						</Col>
 						<Col span={6}>
-							<span>测试1</span>
-							<span>，</span>
-							<span>测试2</span>
+							<span>10.10.10.10</span>
 						</Col>
 						<Col span={6}>
 							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
@@ -458,54 +451,12 @@ class ApManageTable extends React.Component {
 							<div>192.168.12.12</div>
 						</Col>
 					</Row>
-					<Row gutter={16} style={{marginBottom: 10}}>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-								运行信道：
-							</div>
-						</Col>
-						<Col span={6}>
-							<span>11(2.4G)，</span>
-							<span>151(5.8G)</span>
-						</Col>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-								运行模式：
-							</div>
-						</Col>
-						<Col span={6}>
-							<div>AP</div>
-						</Col>
-					</Row>
-					<Row gutter={16} style={{marginBottom: 10}}>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-								连接终端数：
-							</div>
-						</Col>
-						<Col span={6}>
-							<span>4(2.4G)，</span>
-							<span>2(5.8G)</span>
-						</Col>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-								末次修改时间：
-							</div>
-						</Col>
-						<Col span={6}>
-							<div>2017-01-30</div>
-						</Col>
-					</Row>
 				</div>
 		)
 		return (
 			<div>
 				<div style={{marginBottom: 16, display: 'flex', flex: 1}}>
 					<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-						<Button 
-							type="primary"
-							disabled = {this.state.selectedRowKeys.length == 0}
-						>下发配置</Button>
 						<Dropdown.Button 
 							overlay={
 								<Menu onClick={this.onMutiOperate.bind(this)}>
@@ -646,4 +597,4 @@ class ApManageTable extends React.Component {
 	}
 }
 
-export default withRouter(ApManageTable);
+export default withRouter(TzManageTable);
