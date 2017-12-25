@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, HashRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, } from 'react-router-dom';
 import Home from './pages/Home';
 import ApManager from './pages/ApManage';
 import GroupManager from './pages/GroupManage';
@@ -12,6 +12,8 @@ import ApSetting from './pages/ApSetting';
 import TzManage from './pages/TzManage';
 import ApType from './pages/ApType';
 import TzType from './pages/TzType';
+import Version from './pages/Version';
+import VersionType from './pages/VersionType';
 
 //
 export default class App extends React.Component {
@@ -34,6 +36,8 @@ export default class App extends React.Component {
 					<Route path="/tzType" component={TzType} />
 					<Route path="/groupManage" component={GroupManager} />
 					<Route path="/apUser" component={ApUser} />
+					<Route path="/version" component={Version} />
+					<Route path="/versionType" component={VersionType} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/editPwd" component={EditPwd} />
 				</div>

@@ -58,6 +58,10 @@ class PageLayout extends React.Component {
 			this.props.history.push("/groupManage");
 		} else if (item.key == "apUser") {
 			this.props.history.push("/apUser");
+		} else if (item.key == "version") {
+			this.props.history.push("/version");
+		} else if (item.key == "versionType") {
+			this.props.history.push("/versionType");
 		}
 	}
 

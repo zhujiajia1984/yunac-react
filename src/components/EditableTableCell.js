@@ -31,10 +31,10 @@ export default class EditableTableCell extends React.Component {
 	//
 	saveText(text) {
 		if (text) {
-			this.props.onSaveText(text);
 			this.setState({ editable: false, preValue: this.state.value });
+			this.props.onSaveText(text);
 		} else {
-			this.setState({ value: this.state.preValue, editable: false, });
+			this.setState({ editable: false, value: this.state.preValue });
 		}
 	}
 
