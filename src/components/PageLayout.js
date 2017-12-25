@@ -54,6 +54,10 @@ class PageLayout extends React.Component {
 			this.props.history.push("/tzManage");
 		} else if (item.key == "tzType") {
 			this.props.history.push("/tzType");
+		} else if (item.key == "devGroup") {
+			this.props.history.push("/groupManage");
+		} else if (item.key == "apUser") {
+			this.props.history.push("/apUser");
 		}
 	}
 

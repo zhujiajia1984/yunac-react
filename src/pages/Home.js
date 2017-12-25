@@ -21,7 +21,9 @@ export default class Home extends React.Component {
 	//
 	render() {
 		return (
-			<PageLayoutContainer selMenu={["系统首页"]} subMenu={["设备管理", "用户管理"]}>
+			<PageLayoutContainer 
+				selMenu={["系统首页"]}
+				subMenu={["设备管理", "用户管理", "系统管理"]}>
 				<div className="content">
 					<Row gutter={{xs: 8, sm: 16, md: 24}}>
 						<Col xs={24} sm={12} md={12} lg={12} xl={6}>

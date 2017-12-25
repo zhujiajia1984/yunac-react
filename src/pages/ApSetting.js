@@ -15,7 +15,7 @@ export default class ApSetting extends React.Component {
 			<div>
 				<PageLayoutContainer 
 					selMenu={["AP管理"]}
-					subMenu={["设备管理", "用户管理"]}
+					subMenu={["设备管理", "用户管理", "系统管理"]}
 					menuTops={[
 						{key: 'ap', title: 'AP状态管理', link: '/apManage'},
 						{key: 'peizhi', title: '配置文件管理', link: '/peizhi'},

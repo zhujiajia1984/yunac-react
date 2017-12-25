@@ -17,7 +17,9 @@ export default class PwdReset extends React.Component {
 	//
 	render() {
 		return (
-			<PageLayoutContainer selMenu={[""]} subMenu={["设备管理", "用户管理"]}>
+			<PageLayoutContainer
+				selMenu={[""]}
+				subMenu={["设备管理", "用户管理", "系统管理"]}>
 				<div className="pageWrapper">
 					<PageHeader
 						title="个人中心"
