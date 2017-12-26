@@ -19,6 +19,8 @@ import LogOperation from './pages/LogOperation';
 import SubClientManage from './pages/SubClientManage';
 import SubRole from './pages/SubRole';
 import SubAccount from './pages/SubAccount';
+import Account from './pages/Account';
+
 //
 export default class App extends React.Component {
 	constructor(props) {
@@ -47,6 +49,7 @@ export default class App extends React.Component {
 					<Route path="/subClient" component={SubClientManage} />
 					<Route path="/subRole" component={SubRole} />
 					<Route path="/subAccount" component={SubAccount} />
+					<Route path="/account" component={Account} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/editPwd" component={EditPwd} />
 				</div>
