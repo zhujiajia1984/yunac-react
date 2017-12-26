@@ -1,31 +1,28 @@
 import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
-import ApTypeTable from '../components/ApTypeTable';
+import SubRoleTable from '../components/SubRoleTable';
 
 //
-export default class ApType extends React.Component {
+export default class SubRole extends React.Component {
 	//
 	constructor(props) {
 		super(props);
 	}
-
-	//
 	render() {
 		return (
 			<PageLayoutContainer 
-				selMenu={["AP管理"]}
+				selMenu={["客户管理"]}
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
-					{key: 'apManage', title: 'AP状态管理', link: '/apManage'},
-					{key: 'peizhi', title: '配置文件管理', link: '/peizhi'},
-					{key: 'apType', title: 'AP型号管理', link: '/apType'}
+					{key: 'subClient', title: '下级客户管理', link: '/subClient'},
+					{key: 'subRole', title: '客户角色管理', link: '/subRole'}
 				]}
-				defaultMenuKey="apType"
+				defaultMenuKey="subRole"
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
 						<div className="pageApBody">
-							<ApTypeTable></ApTypeTable>
+							<SubRoleTable></SubRoleTable>
 						</div>
 					</div>
 				</div>

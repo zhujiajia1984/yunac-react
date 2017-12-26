@@ -91,13 +91,6 @@ class ApUserTable extends React.Component {
 			sorter: (a, b) => {
 				return (a.ssid.length - b.ssid.length);
 			},
-			render: (text, record, index) => {
-				return <EditableTableCell
-							type="select"
-							value={text}
-							onSaveText={this.onSaveDevName.bind(this)}
-				></EditableTableCell>
-			},
 		}, {
 			title: "信号强度",
 			dataIndex: "signal",

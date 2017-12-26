@@ -44,25 +44,7 @@ class PageLayout extends React.Component {
 
 	//
 	onTopMenuChange(item) {
-		if (item.key == "peizhi") {
-			this.props.history.push("/peizhi");
-		} else if (item.key == "ap") {
-			this.props.history.push("/apManage");
-		} else if (item.key == "apType") {
-			this.props.history.push("/apType");
-		} else if (item.key == "tz") {
-			this.props.history.push("/tzManage");
-		} else if (item.key == "tzType") {
-			this.props.history.push("/tzType");
-		} else if (item.key == "devGroup") {
-			this.props.history.push("/groupManage");
-		} else if (item.key == "apUser") {
-			this.props.history.push("/apUser");
-		} else if (item.key == "version") {
-			this.props.history.push("/version");
-		} else if (item.key == "versionType") {
-			this.props.history.push("/versionType");
-		}
+		this.props.history.push(`/${item.key}`);
 	}
 
 	//

@@ -14,7 +14,11 @@ import ApType from './pages/ApType';
 import TzType from './pages/TzType';
 import Version from './pages/Version';
 import VersionType from './pages/VersionType';
-
+import LogSystem from './pages/LogSystem';
+import LogOperation from './pages/LogOperation';
+import SubClientManage from './pages/SubClientManage';
+import SubRole from './pages/SubRole';
+import SubAccount from './pages/SubAccount';
 //
 export default class App extends React.Component {
 	constructor(props) {
@@ -38,6 +42,11 @@ export default class App extends React.Component {
 					<Route path="/apUser" component={ApUser} />
 					<Route path="/version" component={Version} />
 					<Route path="/versionType" component={VersionType} />
+					<Route path="/logSystem" component={LogSystem} />
+					<Route path="/logOperation" component={LogOperation} />
+					<Route path="/subClient" component={SubClientManage} />
+					<Route path="/subRole" component={SubRole} />
+					<Route path="/subAccount" component={SubAccount} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/editPwd" component={EditPwd} />
 				</div>

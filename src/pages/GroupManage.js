@@ -14,9 +14,9 @@ export default class GroupManage extends React.Component {
 				selMenu={["分组管理"]}
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
-					{key: 'devGroup', title: '设备分组管理', link: '/groupManage'},
+					{key: 'groupManage', title: '设备分组管理', link: '/groupManage'},
 				]}
-				defaultMenuKey="devGroup"
+				defaultMenuKey="groupManage"
 			>
 				<div className="pageWrapper">
 						<div className="pageApContent">

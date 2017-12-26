@@ -1,5 +1,6 @@
 import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
+import VersionTypeTable from '../components/VersionTypeTable';
 
 //
 export default class VersionType extends React.Component {
@@ -24,7 +25,7 @@ export default class VersionType extends React.Component {
 					<div className="pageWrapper">
 						<div className="pageApContent">
 							<div className="pageApBody">
-								型号管理
+								<VersionTypeTable></VersionTypeTable>
 							</div>
 						</div>
 					</div>
