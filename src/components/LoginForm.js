@@ -22,7 +22,7 @@ class LoginForm extends React.Component {
 				// setTimeout(() => {
 				// 	this.setState({ isLoading: false });
 
-				// }, 2000)
+				// }, 500)
 			}
 		});
 	}

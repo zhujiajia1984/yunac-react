@@ -49,7 +49,7 @@ class SubClientTable extends React.Component {
 				})
 			}
 			this.setState({ isLoading: false, data: data });
-		}, 2000)
+		}, 500)
 	}
 
 	//
@@ -173,9 +173,9 @@ class SubClientTable extends React.Component {
 							</div>
 		}
 	}
-	/> <
-	/Table> <
-	/div>
+	/> < /
+	Table > <
+		/div>
 );
 }
 }

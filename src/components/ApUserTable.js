@@ -136,7 +136,7 @@ class ApUserTable extends React.Component {
 				})
 			}
 			this.setState({ isLoading: false, data: data });
-		}, 2000)
+		}, 500)
 	}
 
 	//
@@ -262,7 +262,7 @@ class ApUserTable extends React.Component {
 		setTimeout(() => {
 			message.success('已成功发送固件升级指令');
 			this.setState({ updateDlgVisible: false, updateLoading: false });
-		}, 2000)
+		}, 500)
 	}
 
 	updateCancel() {

@@ -108,6 +108,7 @@ class PageLayout extends React.Component {
 								mode="horizontal"
 								defaultSelectedKeys={[this.props.defaultMenuKey]}
 								onClick={this.onTopMenuChange.bind(this)}
+								className="topMenuStyle"
 							>
 								{this.props.menuTops.map((item)=>{
 									return <Item key={item.key}>{item.title}</Item>

@@ -48,7 +48,7 @@ export default class VersionTable extends React.Component {
 				})
 			}
 			this.setState({ isLoading: false, data: data });
-		}, 2000)
+		}, 500)
 	}
 
 	//

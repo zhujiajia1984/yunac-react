@@ -55,7 +55,7 @@ export default class SubAccountTable extends React.Component {
 				})
 			}
 			this.setState({ isLoading: false, data: data });
-		}, 2000)
+		}, 500)
 	}
 
 	//
@@ -76,7 +76,7 @@ export default class SubAccountTable extends React.Component {
 		setTimeout(() => {
 			message.success('已成功修改用户权限');
 			this.setState({ isBtnLoading: false });
-		}, 2000)
+		}, 500)
 	}
 
 	//

@@ -56,7 +56,7 @@ class PwdResetForm extends React.Component {
 					message.success("密码修改成功，即将登录系统", 3, () => {
 						this.props.onSubmitPwd(values);
 					})
-				}, 2000)
+				}, 500)
 			}
 		});
 	}

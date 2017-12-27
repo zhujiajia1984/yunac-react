@@ -29,7 +29,7 @@ export default class Login extends React.Component {
 		// setTimeout(() => {
 		// 	this.setState({ isLoginLoading: false });
 		// 	this.props.history.push('/index');
-		// }, 2000);
+		// }, 500);
 	}
 
 	// 忘记密码

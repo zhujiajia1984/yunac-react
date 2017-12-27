@@ -23,7 +23,12 @@ export default class Home extends React.Component {
 		return (
 			<PageLayoutContainer 
 				selMenu={["系统首页"]}
-				subMenu={["设备管理", "用户管理", "系统管理"]}>
+				subMenu={["设备管理", "用户管理", "系统管理"]}
+				menuTops={[
+					{key: 'index', title: '实时监控', link: '/index'},
+				]}
+				defaultMenuKey="index"
+			>
 				<div className="content">
 					<Row gutter={{xs: 8, sm: 16, md: 24}}>
 						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
