@@ -4,3 +4,25 @@
 	flex: 1;
 	padding: 24px;
 }
+
+.DevUserCard {
+	width: 100%;
+}
+
+.DevUserCard>.ant-card-body {
+	padding: 0px;
+}
+
+.DevUserTabs {
+	font-size: 14px;
+}
+
+.DevUserTabs>.ant-tabs-bar {
+	padding-left: 16px;
+}
+
+.ant-tabs-nav .ant-tabs-tab {
+	padding-top: 16px;
+	padding-bottom: 16px;
+	font-size: 16px;
+}

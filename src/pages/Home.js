@@ -1,8 +1,13 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Card, Tabs } from 'antd';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import css from './Home.css';
-import HomeCard from '../components/HomeCard';
+import DevInfo from '../components/Home/DevInfo';
+import DevStatus from '../components/Home/DevStatus';
+import DevUser from '../components/Home/DevUser';
+
+// const
+const TabPane = Tabs.TabPane;
 
 
 //
@@ -30,18 +35,36 @@ export default class Home extends React.Component {
 				defaultMenuKey="index"
 			>
 				<div className="content">
-					<Row gutter={{xs: 8, sm: 16, md: 24}}>
-						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
-							<HomeCard></HomeCard>
+					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
+						<Col xs={24} sm={24} md={24} lg={12} xl={8}>
+							<Card title="设备概况" bordered={false} style={{ width: '100%' }}>
+								<DevInfo></DevInfo>
+							</Card>
 						</Col>
-						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
-							<HomeCard></HomeCard>
+						<Col xs={24} sm={24} md={24} lg={12} xl={16}>
+							<Card title="设备状态" bordered={false} style={{ width: '100%' }}>
+								<DevStatus></DevStatus>
+							</Card>
 						</Col>
-						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
-							<HomeCard></HomeCard>
+					</Row>
+					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
+						<Col span={24}>
+							<Card bordered={false} className="DevUserCard">
+								<Card title="AP在线用户趋势" bordered={false} style={{ width: '100%' }}>
+									<p>Card content</p>
+									<p>Card content</p>
+									<p>Card content</p>
+								</Card>
+							</Card>
 						</Col>
-						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
-							<HomeCard></HomeCard>
+					</Row>
+					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
+						<Col span={24}>
+							<Card title="流量趋势" bordered={false} style={{ width: '100%' }}>
+								<p>Card content</p>
+								<p>Card content</p>
+								<p>Card content</p>
+							</Card>
 						</Col>
 					</Row>
 				</div>
