@@ -58,6 +58,7 @@ export default class Home extends React.Component {
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
 					{key: 'index', title: '实时监控', link: '/index'},
+					{key: 'hometongji', title: '数据统计', link: '/hometongji'},
 				]}
 				defaultMenuKey="index"
 			>

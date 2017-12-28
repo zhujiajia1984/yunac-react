@@ -20,6 +20,7 @@ import SubClientManage from './pages/SubClientManage';
 import SubRole from './pages/SubRole';
 import SubAccount from './pages/SubAccount';
 import Account from './pages/Account';
+import HomeTongji from './pages/HomeTongji';
 
 //
 export default class App extends React.Component {
@@ -35,6 +36,7 @@ export default class App extends React.Component {
 					<Route exact path="/" component={Login} />
 					<Route path="/pwdReset" component={PwdReset} />
 					<Route path="/index" component={Home} />
+					<Route path="/hometongji" component={HomeTongji} />
 					<Route path="/apManage" component={ApManager} />
 					<Route path="/peizhi" component={ApSetting} />
 					<Route path="/apType" component={ApType} />
