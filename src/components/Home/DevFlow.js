@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 //
-export default class DevUser extends React.Component {
+export default class DevFlow extends React.Component {
 	//
 	constructor(props) {
 		super(props);
@@ -36,6 +36,7 @@ export default class DevUser extends React.Component {
 			}
 			this.chartOptions.xAxis.data = this.xData;
 			this.chartOptions.series[0].data.push(this.RandomNumBoth(1000, 2000).toString());
+			this.chartOptions.series[1].data.push(this.RandomNumBoth(500, 1000).toString());
 			this.chart.setOption(this.chartOptions);
 		}, 30000);
 		//
@@ -44,7 +45,7 @@ export default class DevUser extends React.Component {
 
 	//
 	initChart() {
-		this.chart = echarts.init(document.getElementById('echarts_devUser'));
+		this.chart = echarts.init(document.getElementById('echarts_devFlow'));
 	}
 
 	//
@@ -58,6 +59,7 @@ export default class DevUser extends React.Component {
 	setChart(time) {
 		this.xData = [];
 		this.yData = [];
+		this.yData2 = [];
 		if (time == 1) {
 			this.count = 120;
 		} else if (time == 6) {
@@ -78,8 +80,15 @@ export default class DevUser extends React.Component {
 		}
 		for (let i = 0; i < this.count; i++) {
 			this.yData.push(this.RandomNumBoth(1000, 2000).toString());
+			this.yData2.push(this.RandomNumBoth(500, 1000).toString());
 		}
 		this.chartOptions = {
+				legend: {
+					show: true,
+					data: ['上行流量', '下行流量'],
+					left: 'center',
+					top: 'top'
+				},
 				tooltip: {
 					trigger: 'axis',
 					axisPointer: {
@@ -106,34 +115,33 @@ export default class DevUser extends React.Component {
 				},
 				yAxis: {
 					type: 'value',
-					name: '人数',
-					splitNumber: 2,
+					name: '流量(KB/s)',
+					splitNumber: 5,
 					boundaryGap: ['0', '10%'],
 					splitLine: {
-						show: false
+						show: true,
+						lineStyle: {
+							color: "#e2e2e2",
+							type: "dashed",
+						}
 					},
 				},
 				series: [{
-					name: '在线人数',
+					name: '下行流量',
 					type: 'line',
-					showSymbol: false,
-					hoverAnimation: false,
-					smooth: true,
 					data: this.yData,
 					itemStyle: {
 						normal: {
 							color: '#3AA1FF',
 						}
 					},
-					areaStyle: {
+				}, {
+					name: '上行流量',
+					type: 'line',
+					data: this.yData2,
+					itemStyle: {
 						normal: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-								offset: 0,
-								color: 'rgb(58, 161, 255)'
-							}, {
-								offset: 1,
-								color: 'rgb(208, 233, 255)'
-							}])
+							color: '#68d387',
 						}
 					},
 				}]
@@ -165,7 +173,7 @@ export default class DevUser extends React.Component {
 	render() {
 		return (
 			<div>
-				<div id="echarts_devUser" style={{height: 300}}>
+				<div id="echarts_devFlow" style={{height: 300}}>
 				</div>
 			</div>
 		);
@@ -173,6 +181,6 @@ export default class DevUser extends React.Component {
 }
 
 //
-DevUser.propTypes = {
+DevFlow.propTypes = {
 	curTime: PropTypes.number.isRequired,
 };

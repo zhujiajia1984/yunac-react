@@ -13,16 +13,16 @@
 	padding: 0px;
 }
 
-.DevUserTabs {
+.devUserExtraDiv>a {
+	color: rgba(0, 0, 0, 0.65);
+	margin-left: 24px;
 	font-size: 14px;
 }
 
-.DevUserTabs>.ant-tabs-bar {
-	padding-left: 16px;
+.devUserExtraDiv>a:hover {
+	color: #1890ff;
 }
 
-.ant-tabs-nav .ant-tabs-tab {
-	padding-top: 16px;
-	padding-bottom: 16px;
-	font-size: 16px;
+.devUserExtraDiv>a.curTime {
+	color: #1890ff;
 }

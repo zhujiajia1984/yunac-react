@@ -97,7 +97,7 @@ export default class DevInfo extends React.Component {
 					value: 23,
 					itemStyle: {
 						normal: {
-							color: '#75E3D6',
+							color: '#68d387',
 							borderWidth: 5,
 							borderColor: '#fff'
 						}

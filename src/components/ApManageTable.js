@@ -92,6 +92,17 @@ class ApManageTable extends React.Component {
 			sorter: (a, b) => {
 				return (a.devGroup.length - b.devGroup.length);
 			},
+			filters: [{
+				text: 'Brown',
+				value: 'Brown'
+			}, {
+				text: 'Green',
+				value: 'Green'
+			}],
+			filterMultiple: true,
+			onFilter: (value, record) => {
+				return record.devGroup.includes(value);
+			},
 			render: (text, record, index) => {
 				return <EditableTableCell
 							type="select"
