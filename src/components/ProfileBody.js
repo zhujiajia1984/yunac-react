@@ -19,6 +19,12 @@ const data = [{
 		desp: '绑定后可通过微信扫码登录平台',
 		isSeted: false,
 	},
+	{
+		title: '邮箱绑定',
+		type: 'email',
+		desp: '绑定后可通过邮箱接收平台报警信息',
+		isSeted: false,
+	},
 ];
 
 //
@@ -36,6 +42,9 @@ class ProfileBody extends React.Component {
 			case "wxLogin":
 				alert("wxLogin");
 				break;
+			case "email":
+				alert("email");
+				break;
 			default:
 				alert("no type");
 				break;
@@ -49,6 +58,14 @@ class ProfileBody extends React.Component {
 				<List
 					dataSource={data}
 					renderItem={(item)=>{
+						let listIcon = null;
+						if(item.type=="pwd"){
+							listIcon = (<Avatar icon="lock" style={{marginTop:10, backgroundColor:'#18aeff'}}/>);
+						}else if(item.type=="wxLogin"){
+							listIcon = (<Avatar icon="wechat" style={{marginTop:10, backgroundColor:'#00cf0d'}}/>);
+						}else if(item.type=="email"){
+							listIcon = (<Avatar icon="mail" style={{marginTop:10, backgroundColor:'#975fe4'}}/>);
+						}
 						return <Item actions = {[<ProfileStatus 
 													isSeted={item.isSeted} 
 													key={item.type}
@@ -57,7 +74,7 @@ class ProfileBody extends React.Component {
 												>
 												</ProfileStatus>]}>
 									<Item.Meta
-										avatar = {(item.type=="pwd")?<Avatar icon="lock" style={{marginTop:10, backgroundColor:'#18aeff'}}/>:<Avatar icon="wechat" style={{marginTop:10, backgroundColor:'#00cf0d'}}/>}
+										avatar = {listIcon}
 										title = {<span style={{fontSize: 14, fontWeight: 600}}>{item.title}</span>}
 										description = {item.desp}
 										style = {{marginLeft: 18}}

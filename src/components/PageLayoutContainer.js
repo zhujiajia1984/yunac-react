@@ -89,6 +89,7 @@ export default class PageLayoutContainer extends React.Component {
 				subMenu={this.props.subMenu}
 				menuTops={this.props.menuTops}
 				defaultMenuKey={this.props.defaultMenuKey}
+				collapsed={this.props.collapsed}
 			>
 				{this.props.children}
 			</PageLayout>
@@ -103,4 +104,5 @@ PageLayoutContainer.propTypes = {
 	subMenu: PropTypes.array,
 	defaultMenuKey: PropTypes.string,
 	menuTops: PropTypes.array,
+	collapsed: PropTypes.bool,
 };

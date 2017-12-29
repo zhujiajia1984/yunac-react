@@ -2,8 +2,7 @@ import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import css from './Profile.css';
 import PageHeader from '../components/PageHeader';
-import ProfileInfo from '../components/ProfileInfo';
-import ProfileBody from '../components/ProfileBody';
+import MsgTableWarn from '../components/MsgCenter/MsgTableWarn';
 
 // const
 
@@ -24,15 +23,10 @@ export default class PwdReset extends React.Component {
 			>
 				<div className="pageWrapper">
 					<PageHeader
-						title="个人中心"
+						title="报警消息"
 					></PageHeader>
 					<div className="pageContent">
-						<div className="profileInfo">
-							<ProfileInfo></ProfileInfo>
-						</div>
-						<div className="profileBody">
-							<ProfileBody></ProfileBody>
-						</div>
+						<MsgTableWarn></MsgTableWarn>
 					</div>
 				</div>
 			</PageLayoutContainer>

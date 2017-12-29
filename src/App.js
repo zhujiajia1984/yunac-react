@@ -21,6 +21,7 @@ import SubRole from './pages/SubRole';
 import SubAccount from './pages/SubAccount';
 import Account from './pages/Account';
 import HomeTongji from './pages/HomeTongji';
+import MsgCenter from './pages/MsgCenter';
 
 //
 export default class App extends React.Component {
@@ -52,6 +53,7 @@ export default class App extends React.Component {
 					<Route path="/subRole" component={SubRole} />
 					<Route path="/subAccount" component={SubAccount} />
 					<Route path="/account" component={Account} />
+					<Route path="/msgCenter" component={MsgCenter} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/editPwd" component={EditPwd} />
 				</div>

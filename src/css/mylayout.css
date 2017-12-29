@@ -124,3 +124,43 @@
 .trigger:hover {
 	color: #1890ff;
 }
+
+.noticeSpan {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.noticeSpan:hover {
+	cursor: pointer;
+	background-color: #e6f7ff;
+}
+
+.ant-popover-title {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	display: flex;
+}
+
+.ant-popover-inner-content {
+	padding: 0px;
+}
+
+.noticeItemImg>.ant-list-item-meta-avatar {
+	margin-top: 8px;
+}
+
+.noticeFooter {
+	border-top: 1px solid #e8e8e8;
+	padding: 15px 16px;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.noticeFooter:hover .noticeFootBtn {
+	color: #18aeff;
+}
+
+.noticeFootBtn {
+	color: rgba(0, 0, 0, 0.65);
+}

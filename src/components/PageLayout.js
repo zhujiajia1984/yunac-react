@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Icon, Dropdown, Avatar } from 'antd';
+import { Layout, Menu, Icon, Dropdown, Avatar, Badge, Popover, Tabs, List } from 'antd';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import css from '../css/mylayout.css';
@@ -7,11 +7,25 @@ import { withRouter } from 'react-router';
 
 // const
 const { Header, Content, Footer, Sider } = Layout;
+const TabPane = Tabs.TabPane;
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
 const siderWidth = 256;
 const MENU_LOGOUT_KEY = 'logout';
 const MENU_PROFILE_KEY = 'profile';
+const noticeData = [{
+		title: 'AP离线报警',
+		desp: 'mac ef:12:23:45:55:87  2017-12-29 14:23',
+	},
+	{
+		title: '探针离线报警',
+		desp: 'mac ef:12:23:45:55:87 2017-12-26 14:23',
+	},
+	{
+		title: '显示日期最近的3条报警',
+		desp: 'mac ef:12:23:45:55:87 2017-12-22 14:23',
+	},
+];
 
 //
 class PageLayout extends React.Component {
@@ -19,7 +33,7 @@ class PageLayout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			collapsed: false,
+			collapsed: this.props.collapsed,
 		}
 	}
 
@@ -48,7 +62,33 @@ class PageLayout extends React.Component {
 	}
 
 	//
+	msgCenter() {
+		this.props.history.push('/msgCenter');
+	}
+
+	//
 	render() {
+		const noticeContent = (
+			<div>
+						<List
+							itemLayout="horizontal"
+							dataSource={noticeData}
+							renderItem={(item)=>{
+								return <List.Item style={{paddingLeft: 24, paddingRight: 24 }}>
+										<List.Item.Meta
+											avatar={<Icon type="minus-circle" style={{fontSize: 20, color: '#fe5d58'}}/>}
+											title={item.title}
+											description={item.desp}
+											className="noticeItemImg"
+										/>
+									</List.Item>
+								}}
+						/>
+						<div className="noticeFooter" onClick={this.msgCenter.bind(this)}>
+							<span className="noticeFootBtn">查看更多</span>
+						</div>
+					</div>
+		)
 		return (
 			<Layout style={{minHeight: '100vh'}}>
 				<Sider
@@ -117,6 +157,17 @@ class PageLayout extends React.Component {
 						</div>
 						<div className={(this.state.collapsed)?"HeaderRightMini":"HeaderRight"}>
 							<div style={{height: '100%', display:'flex'}}>
+								<Popover placement="bottomRight"
+									title="报警消息"
+									content={noticeContent}
+									trigger="click"
+								>
+									<div className="noticeSpan">
+										<Badge count={2}>
+											<Icon type="bell" style={{fontSize: 16, paddingLeft: 1, paddingRight: 4}}/>										
+										</Badge>
+									</div>
+								</Popover>
 								<Dropdown overlay={
 									<Menu onClick={this.onRightSysMenu.bind(this)}>
 										<Item style={{width: 160}} key={MENU_PROFILE_KEY}>
@@ -128,7 +179,7 @@ class PageLayout extends React.Component {
 										</Item>
 									</Menu>
 								}>
-									<span className="dropdown-link" href="javascript:;">
+									<span className="dropdown-link" href="javascript:;"  style={{paddingLeft: 12, paddingRight: 12}}>
 										<Avatar size="small" icon="user" />
 										<span style={{marginLeft: 5}}>{
 											// this.props.location.state.userName
@@ -161,6 +212,7 @@ PageLayout.propTypes = {
 	history: PropTypes.object,
 	defaultMenuKey: PropTypes.string,
 	menuTops: PropTypes.array,
+	collapsed: PropTypes.bool,
 };
 
 PageLayout.defaultProps = {
@@ -168,6 +220,7 @@ PageLayout.defaultProps = {
 	subMenu: [],
 	defaultMenuKey: '',
 	menuTops: [],
+	collapsed: false,
 };
 
 //
