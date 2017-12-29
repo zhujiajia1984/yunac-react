@@ -26,3 +26,27 @@
 .devUserExtraDiv>a.curTime {
 	color: #1890ff;
 }
+
+.ant-card-extra {
+	padding: 0px;
+	display: flex;
+	align-items: center;
+}
+
+.dateSel {
+	display: flex;
+	align-items: center;
+	margin-left: 16px;
+	height: 100%;
+	width: 256px;
+}
+
+.devUserExtraDiv {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+span.ant-calendar-picker-input {
+	display: flex;
+}

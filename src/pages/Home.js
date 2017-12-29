@@ -63,14 +63,14 @@ export default class Home extends React.Component {
 				defaultMenuKey="index"
 			>
 				<div className="content">
-					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
+					<Row gutter={{xs: 8, sm: 16, md: 24}} >
 						<Col xs={24} sm={24} md={24} lg={12} xl={8}>
-							<Card title="设备概况" bordered={false} style={{ width: '100%' }}>
+							<Card title="设备概况" bordered={false} style={{ width: '100%', marginBottom: 24 }}>
 								<DevInfo></DevInfo>
 							</Card>
 						</Col>
 						<Col xs={24} sm={24} md={24} lg={12} xl={16}>
-							<Card title="设备状态" bordered={false} style={{ width: '100%' }}>
+							<Card title="设备状态" bordered={false} style={{ width: '100%', marginBottom: 24 }}>
 								<DevStatus></DevStatus>
 							</Card>
 						</Col>
@@ -86,7 +86,7 @@ export default class Home extends React.Component {
 							</Card>
 						</Col>
 					</Row>
-					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
+					<Row gutter={{xs: 8, sm: 16, md: 24}}>
 						<Col span={24}>
 							<Card title="AP流量趋势" bordered={false} style={{ width: '100%' }}
 								extra={devFlowExtra}

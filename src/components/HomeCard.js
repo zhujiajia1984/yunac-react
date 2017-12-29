@@ -36,8 +36,11 @@ export default class HomeCard extends React.Component {
 							style={{width: '100%'}} />
 						</div>
 						<div className="HomeCardFooter">
-							<div style={{paddingTop: 4}}>
-								abc
+							<div style={{paddingTop: 4, color: 'rgba(0, 0, 0, 0.45)'}}>
+								<span>{this.props.f1Title}</span>
+								<span style={{color: 'rgba(0, 0, 0, 0.85)'}}>{this.props.f1Content}</span>
+								<span style={{marginLeft: 16}}>{this.props.f2Title}</span>
+								<span style={{color: 'rgba(0, 0, 0, 0.85)'}}>{this.props.f2Content}</span>
 							</div>
 						</div>
 					</div>
@@ -54,4 +57,8 @@ HomeCard.propTypes = {
 	content: PropTypes.string.isRequired,
 	unit: PropTypes.string,
 	imageUrl: PropTypes.string.isRequired,
+	f1Title: PropTypes.string,
+	f1Content: PropTypes.string,
+	f2Title: PropTypes.string,
+	f2Content: PropTypes.string,
 };
