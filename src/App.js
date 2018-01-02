@@ -22,6 +22,7 @@ import SubAccount from './pages/SubAccount';
 import Account from './pages/Account';
 import HomeTongji from './pages/HomeTongji';
 import MsgCenter from './pages/MsgCenter';
+import ApMonitor from './pages/ApMonitor';
 
 //
 export default class App extends React.Component {
@@ -39,6 +40,7 @@ export default class App extends React.Component {
 					<Route path="/index" component={Home} />
 					<Route path="/hometongji" component={HomeTongji} />
 					<Route path="/apManage" component={ApManager} />
+					<Route path="/apMonitor" component={ApMonitor} />
 					<Route path="/peizhi" component={ApSetting} />
 					<Route path="/apType" component={ApType} />
 					<Route path="/tzManage" component={TzManage} />

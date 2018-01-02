@@ -1,0 +1,34 @@
+.card-container>.ant-tabs-card>.ant-tabs-content {
+	/*height: 120px;*/
+	margin-top: -16px;
+}
+
+.card-container>.ant-tabs-card>.ant-tabs-content>.ant-tabs-tabpane {
+	background: #fff;
+	padding: 16px;
+}
+
+.card-container>.ant-tabs-card>.ant-tabs-bar {
+	border-color: #fff;
+}
+
+.card-container>.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
+	border-color: transparent;
+	background: transparent;
+}
+
+.card-container>.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
+	border-color: #fff;
+	background: #fff;
+}
+
+.pageApMonitorBody {
+	/*	padding-left: 24px;
+	padding-right: 24px;*/
+	padding-top: 8px;
+	margin-top: 16px;
+}
+
+.pageApMonitorRow {
+	margin-top: 24px;
+}

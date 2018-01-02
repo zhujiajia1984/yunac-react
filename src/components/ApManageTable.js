@@ -168,7 +168,7 @@ class ApManageTable extends React.Component {
 			dataIndex: "action",
 			render: (text, record, index) => {
 				return <div>
-					<a href="javascript:;">监控</a>
+					<a href="javascript:;" onClick={this.apMonitor.bind(this)}>监控</a>
 					<Divider type="vertical" />
 					<Dropdown overlay={
 						<Menu onClick={this.onRefresh.bind(this, record)}>
@@ -217,6 +217,11 @@ class ApManageTable extends React.Component {
 			}
 			this.setState({ isLoading: false, data: data });
 		}, 500)
+	}
+
+	//
+	apMonitor() {
+		this.props.history.push('/apMonitor');
 	}
 
 	//
