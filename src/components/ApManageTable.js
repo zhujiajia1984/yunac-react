@@ -61,6 +61,10 @@ class ApManageTable extends React.Component {
 			devMacVisible: false,
 			isShowAlert: false,
 			selectCount: 0,
+			modalTitle: '',
+			confirmMsg: '',
+			isModalSelOption: true,
+			modalContent: ''
 		}
 	}
 
@@ -175,26 +179,14 @@ class ApManageTable extends React.Component {
 								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程配置</a>
 							</MenuItem>
 							<MenuItem key="reboot">
-								<Popconfirm title="确认重启该设备吗？" 
-									okText="确认" 
-									cancelText="取消"
-									onConfirm={this.onReboot.bind(this, record)}
-								>
-									<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程重启</a>
-								</Popconfirm>
+								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程重启</a>
 							</MenuItem>
 							<MenuItem key="update">
 								<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>固件升级</a>
 							</MenuItem>
 							<Menu.Divider />
 							<MenuItem key="deleteDev">
-								<Popconfirm title="确认删除该设备吗？" 
-									okText="确认" 
-									cancelText="取消"
-									onConfirm={this.onDeleteDev.bind(this, record)}
-								>
-									<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>删除设备</a>
-								</Popconfirm>
+								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>删除设备</a>
 							</MenuItem>
 						</Menu>
 					} trigger={['click']}
@@ -239,7 +231,39 @@ class ApManageTable extends React.Component {
 			case "update":
 				this.setState({ isLoading: true });
 				setTimeout(() => {
-					this.setState({ isLoading: false, updateDlgVisible: true });
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '固件升级',
+						confirmMsg: '已成功下发固件升级指令',
+						isModalSelOption: true,
+					});
+				}, 500)
+				break;
+			case "reboot":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '远程重启',
+						confirmMsg: '已成功下发远程重启指令',
+						isModalSelOption: false,
+						modalContent: '确认要重启选中的设备吗？'
+					});
+				}, 500)
+				break;
+			case "deleteDev":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '删除设备',
+						confirmMsg: '已成功删除设备',
+						isModalSelOption: false,
+						modalContent: '确认删除选中的设备吗？'
+					});
 				}, 500)
 				break;
 			default:
@@ -251,11 +275,74 @@ class ApManageTable extends React.Component {
 	//
 	onMutiOperate(values) {
 		switch (values.key) {
-			default: this.setState({ isLoading: true });
-			setTimeout(() => {
-				this.setState({ isLoading: false, updateDlgVisible: true });
-			}, 500)
-			break;
+			case "reboot":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '远程重启',
+						confirmMsg: '已成功下发远程重启指令',
+						isModalSelOption: false,
+						modalContent: '确认要重启选中的设备吗？'
+					});
+				}, 500)
+				break;
+			case "update":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '固件升级',
+						confirmMsg: '已成功下发固件升级指令',
+						isModalSelOption: true,
+					});
+				}, 500)
+				break;
+			case "moveGroup":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '修改分组',
+						confirmMsg: '已成功修改分组',
+						isModalSelOption: true,
+					});
+				}, 500)
+				break;
+			case "moveClient":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '修改所属客户',
+						confirmMsg: '已成功修改所属客户',
+						isModalSelOption: true,
+					});
+				}, 500)
+				break;
+			case "deleteDev":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						modalTitle: '删除设备',
+						confirmMsg: '已成功删除设备',
+						isModalSelOption: false,
+						modalContent: '确认删除选中的设备吗？'
+					});
+				}, 500)
+				break;
+			default:
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({ isLoading: false, updateDlgVisible: true });
+				}, 500)
+				break;
 		}
 	}
 
@@ -348,7 +435,7 @@ class ApManageTable extends React.Component {
 	updateConfirm() {
 		this.setState({ updateLoading: true });
 		setTimeout(() => {
-			message.success('已成功发送固件升级指令');
+			message.success(this.state.confirmMsg);
 			this.setState({ updateDlgVisible: false, updateLoading: false });
 		}, 500)
 	}
@@ -397,6 +484,20 @@ class ApManageTable extends React.Component {
 			pagination.pageSize = parseInt(value);
 			this.setState({ pagination: pagination });
 		}
+	}
+
+	//
+	onSelectSetting() {
+		this.setState({ isLoading: true });
+		setTimeout(() => {
+			this.setState({
+				isLoading: false,
+				updateDlgVisible: true,
+				modalTitle: '下发配置',
+				confirmMsg: '已成功下发配置',
+				isModalSelOption: true,
+			});
+		}, 500)
 	}
 
 	//
@@ -516,6 +617,7 @@ class ApManageTable extends React.Component {
 						<Button 
 							type="primary"
 							disabled = {this.state.selectedRowKeys.length == 0}
+							onClick = {this.onSelectSetting.bind(this)}
 						>下发配置</Button>
 						<Dropdown.Button 
 							overlay={
@@ -611,7 +713,7 @@ class ApManageTable extends React.Component {
 				</div>
 				<Modal
 					visible={this.state.updateDlgVisible}
-					title="固件升级"
+					title={this.state.modalTitle}
 					onOk={this.updateConfirm.bind(this)}
 					onCancel={this.updateCancel.bind(this)}
 					footer={[
@@ -624,8 +726,14 @@ class ApManageTable extends React.Component {
 						</Button>
 					]}
 				>
-					<p>abc</p>
-					<p>def</p>
+					{
+						(this.state.isModalSelOption)?
+						<Select defaultValue="lucy" style={{ width: '100%' }} >
+							<Option value="jack">选项1</Option>
+							<Option value="lucy">选项2</Option>
+						</Select>:
+						<span>{this.state.modalContent}</span>
+					}
 				</Modal>
 				{
 					(this.state.isShowAlert)?

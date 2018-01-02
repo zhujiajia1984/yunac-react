@@ -4,8 +4,11 @@ import PageHeader from '../components/PageHeader';
 import cssApManage from './ApManage.css';
 import ApSearchFormWrapper from '../components/ApSearchForm';
 import ApManageTableWrapper from '../components/ApManageTable';
+import { Radio } from 'antd';
 
-
+// const
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 //
 export default class ApManage extends React.Component {
@@ -41,6 +44,12 @@ export default class ApManage extends React.Component {
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
+						<div className="pageAptype">
+							<RadioGroup defaultValue="a">
+								<RadioButton value="a">本级AP</RadioButton>
+								<RadioButton value="b">下级AP</RadioButton>
+							</RadioGroup>
+						</div>
 						<div className="pageApBody">
 							<ApSearchFormWrapper></ApSearchFormWrapper>
 							<ApManageTableWrapper></ApManageTableWrapper>
