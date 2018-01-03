@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, DatePicker } from 'antd';
+import { Row, Col, Card, DatePicker, Select, Modal, Button } from 'antd';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import HomeCard from '../components/HomeCard';
 import css from './Home.css';
@@ -10,7 +10,11 @@ import ApFlowHis from '../components/Home/ApFlowHis';
 import ApUserHisTable from '../components/Home/ApUserHisTable';
 import ApFlowHisTable from '../components/Home/ApFlowHisTable';
 
+
+// const
 const { RangePicker } = DatePicker;
+const { Meta } = Card;
+const Option = Select.Option;
 
 //
 export default class HomeTongji extends React.Component {
@@ -21,6 +25,10 @@ export default class HomeTongji extends React.Component {
 		this.state = {
 			devUserCurTime: 7,
 			devFlowCurTime: 7,
+			devUserType: 'all',
+			modalTitle: '',
+			modalVisible: false,
+			devUserTypeName: ''
 		}
 	}
 
@@ -42,6 +50,44 @@ export default class HomeTongji extends React.Component {
 	}
 
 	//
+	onChangeDevUserType(e) {
+		if (e == "group") {
+			this.setState({
+				devUserType: e,
+				modalVisible: true,
+				modalTitle: '选择分组'
+			});
+		} else if (e == "all") {
+			this.setState({ devUserType: e, devUserTypeName: '' });
+		} else if (e == "device") {
+			this.setState({
+				devUserType: e,
+				modalVisible: true,
+				modalTitle: '选择设备'
+			});
+		}
+	}
+
+	//
+	handleModalOk() {
+		if (this.state.devUserType == "group") {
+			this.setState({ modalVisible: false, devUserTypeName: '分组1' });
+		} else {
+			this.setState({ modalVisible: false, devUserTypeName: '设备名称1(ef:11:22:33:44:55:66)' });
+		}
+	}
+
+	//
+	handleModalCancel() {
+		this.setState({ modalVisible: false });
+	}
+
+	//
+	onChangeDevUserName() {
+
+	}
+
+	//
 	render() {
 		const devUserExtra = (
 			<div className="devUserExtraDiv">
@@ -53,6 +99,14 @@ export default class HomeTongji extends React.Component {
 						defaultValue={[moment().subtract(7, 'days'), moment().subtract(1, 'days')]}
 					></RangePicker>
 				</div>
+				<div>
+					<Select defaultValue="all" style={{ width: 120 }} onChange={this.onChangeDevUserType.bind(this)}>
+						<Option value="all">所有设备</Option>
+						<Option value="group">按分组</Option>
+						<Option value="device">按设备</Option>
+					</Select>
+				</div>
+				<span style={{marginLeft:5}}>{this.state.devUserTypeName}</span>
 			</div>
 		)
 		const devTimeExtra = (
@@ -118,6 +172,34 @@ export default class HomeTongji extends React.Component {
 					</Row>
 					<span style={{fontSize: 20, fontWeight: 500, marginBottom: 5}}
 					>历史统计</span>
+					<Modal
+						title={this.state.modalTitle}
+						visible={this.state.modalVisible}
+						closable={false}
+						maskClosable={false}
+						footer={[
+							<Button key="submit" type="primary" onClick={this.handleModalOk.bind(this)}>确认</Button>
+						]}
+					>
+						{
+							(this.state.devUserType == "group")?
+							<Select defaultValue="g1" style={{ width: '100%' }}>
+								<Option value="g1">分组1</Option>
+								<Option value="g2">分组2</Option>
+								<Option value="g3">分组3</Option>
+							</Select>:
+							<Select 
+								defaultValue="123"
+								style={{ width: '100%' }}
+								mode="tags"
+								onChange={this.onChangeDevUserName.bind(this)}
+							>
+								<Option value="123">设备名称1(ef:12:23:45:67:78)</Option>
+								<Option value="234">设备名称2(ef:12:23:45:67:78)</Option>
+								<Option value="456">设备名称3(ef:12:23:45:67:78)</Option>
+							</Select>
+						}
+					</Modal>
 					<Card bordered={false} className="DevUserCard">
 						<Card title="AP使用人数统计" bordered={false} style={{ width: '100%' }}
 							extra={devUserExtra}
