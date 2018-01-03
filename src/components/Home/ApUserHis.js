@@ -47,6 +47,8 @@ export default class ApUserHis extends React.Component {
 	setChart(time) {
 		this.xData = [];
 		this.yData = [];
+		this.yData24 = [];
+		this.yData58 = [];
 		if (time == 7) {
 			this.count = 7;
 		} else if (time == 30) {
@@ -60,14 +62,32 @@ export default class ApUserHis extends React.Component {
 			this.xData.unshift(curMoment.subtract(1, 'days').format('YYYY-MM-DD'));
 		}
 		for (let i = 0; i < this.count; i++) {
-			this.yData.push(this.RandomNumBoth(1000, 2000).toString());
+			let data24 = this.RandomNumBoth(1000, 2000);
+			let data58 = this.RandomNumBoth(1000, 2000);
+			this.yData24.push(data24);
+			this.yData58.push(data58);
+			this.yData.push(data24 + data58);
 		}
 		this.chartOptions = {
+				// title: {
+				// 	text: '使用人数趋势',
+				// 	textStyle: {
+				// 		fontStyle: 14,
+				// 		color: "rgba(0, 0, 0, 0.85)",
+				// 		fontWeight: '500',
+				// 	}
+				// },
 				tooltip: {
 					trigger: 'axis',
 					axisPointer: {
 						type: 'line',
 					},
+				},
+				legend: {
+					show: true,
+					data: ['总人数', '2.4G人数', '5.8G人数'],
+					left: 'center',
+					top: 'top'
 				},
 				dataZoom: [{
 					type: 'slider',
@@ -97,7 +117,7 @@ export default class ApUserHis extends React.Component {
 					},
 				},
 				series: [{
-					name: '用户人数',
+					name: '总人数',
 					type: 'line',
 					showSymbol: false,
 					hoverAnimation: false,
@@ -108,15 +128,28 @@ export default class ApUserHis extends React.Component {
 							color: '#3AA1FF',
 						}
 					},
-					areaStyle: {
+				}, {
+					name: '2.4G人数',
+					type: 'line',
+					showSymbol: false,
+					hoverAnimation: false,
+					smooth: true,
+					data: this.yData24,
+					itemStyle: {
 						normal: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-								offset: 0,
-								color: 'rgb(58, 161, 255)'
-							}, {
-								offset: 1,
-								color: 'rgb(208, 233, 255)'
-							}])
+							color: '#68d387',
+						}
+					},
+				}, {
+					name: '5.8G人数',
+					type: 'line',
+					showSymbol: false,
+					hoverAnimation: false,
+					smooth: true,
+					data: this.yData58,
+					itemStyle: {
+						normal: {
+							color: '#975fe4',
 						}
 					},
 				}]
@@ -146,7 +179,7 @@ export default class ApUserHis extends React.Component {
 	render() {
 		return (
 			<div>
-				<div id="echarts_ApUser" style={{height: 300}}>
+				<div id="echarts_ApUser" style={{height: 400}}>
 				</div>
 			</div>
 		);

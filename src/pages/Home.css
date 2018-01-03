@@ -7,6 +7,12 @@
 
 .DevUserCard {
 	width: 100%;
+	margin-bottom: 24px;
+}
+
+.DevUserTitle {
+	color: rgba(0, 0, 0, 0.85);
+	margin-bottom: 8px;
 }
 
 .DevUserCard>.ant-card-body {

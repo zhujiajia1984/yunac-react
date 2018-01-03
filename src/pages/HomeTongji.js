@@ -7,7 +7,8 @@ import ApUserHis from '../components/Home/ApUserHis';
 import moment from 'moment';
 import ApTimeHis from '../components/Home/ApTimeHis';
 import ApFlowHis from '../components/Home/ApFlowHis';
-
+import ApUserHisTable from '../components/Home/ApUserHisTable';
+import ApFlowHisTable from '../components/Home/ApFlowHisTable';
 
 const { RangePicker } = DatePicker;
 
@@ -18,7 +19,8 @@ export default class HomeTongji extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			devUserCurTime: 7
+			devUserCurTime: 7,
+			devFlowCurTime: 7,
 		}
 	}
 
@@ -31,6 +33,12 @@ export default class HomeTongji extends React.Component {
 	changeDevUserTime(time, e) {
 		e.preventDefault();
 		this.setState({ devUserCurTime: time });
+	}
+
+	//
+	changeDevFlowTime(time, e) {
+		e.preventDefault();
+		this.setState({ devFlowCurTime: time });
 	}
 
 	//
@@ -48,14 +56,16 @@ export default class HomeTongji extends React.Component {
 			</div>
 		)
 		const devTimeExtra = (
-			<RangePicker format={"YYYY-MM-DD"}
-				style={{width: 220,}}
-				ranges={{'最近7天': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
-					'最近30天': [moment().subtract(30, 'days'), moment().subtract(1, 'days')]
-				}}
-				defaultValue={[moment().subtract(7, 'days'), moment().subtract(1, 'days')]}
-				allowClear={false}
-			></RangePicker>
+			<div className="devUserExtraDiv">
+				<a className={(this.state.devFlowCurTime==7)?"curTime":""} onClick={this.changeDevFlowTime.bind(this, 7)}>最近7天</a>
+				<a className={(this.state.devFlowCurTime==30)?"curTime":""} onClick={this.changeDevFlowTime.bind(this, 30)}>最近30天</a>
+				<div className="dateSel">
+					<RangePicker format={"YYYY-MM-DD"}
+						allowClear={false}
+						defaultValue={[moment().subtract(7, 'days'), moment().subtract(1, 'days')]}
+					></RangePicker>
+				</div>
+			</div>
 		)
 		return (
 			<PageLayoutContainer 
@@ -71,7 +81,7 @@ export default class HomeTongji extends React.Component {
 					<span style={{fontSize: 20, fontWeight: 500, marginBottom: 5}}
 					>昨日数据</span>
 					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 0}}>
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<HomeCard name="设备总数"
 								detail="截止昨日24点的设备总数"
 								content="123"
@@ -82,26 +92,18 @@ export default class HomeTongji extends React.Component {
 								f2Content="23"
 							></HomeCard>
 						</Col>
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<HomeCard name="AP使用人数"
 								detail="昨日使用AP的总用户人数"
 								content="5843"
 								imageUrl="https://weiquaninfo.cn/images/22.png"
-								f1Title="AP使用人次："
+								f1Title="2.4G人数："
 								f1Content="1000"
+								f2Title="5.8G人数："
+								f2Content="1500"
 							></HomeCard>
 						</Col>
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
-							<HomeCard name="AP人均使用时长"
-								detail="昨日AP的人均使用时长"
-								content="237"
-								unit="分钟"
-								imageUrl="https://weiquaninfo.cn/images/33.png"
-								f1Title="AP使用总时长："
-								f1Content="5000分钟"
-							></HomeCard>
-						</Col>
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<HomeCard name="AP使用流量"
 								detail="昨日AP的总使用流量（上行+下行）"
 								content="15.4"
@@ -116,37 +118,39 @@ export default class HomeTongji extends React.Component {
 					</Row>
 					<span style={{fontSize: 20, fontWeight: 500, marginBottom: 5}}
 					>历史统计</span>
-					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 24}}>
-						<Col span={24}>
-							<Card bordered={false} className="DevUserCard">
-								<Card title="AP使用人数统计" bordered={false} style={{ width: '100%' }}
-									extra={devUserExtra}
-								>
+					<Card bordered={false} className="DevUserCard">
+						<Card title="AP使用人数统计" bordered={false} style={{ width: '100%' }}
+							extra={devUserExtra}
+						>
+							<Row gutter={{xs: 8, sm: 16, md: 24}} >
+								<Col xs={24} sm={24} md={24} lg={16} xl={16}>
+									<div className="DevUserTitle">使用人数趋势</div>
 									<ApUserHis curTime={this.state.devUserCurTime}></ApUserHis>
-								</Card>
-							</Card>
-						</Col>
-					</Row>
-					<Row gutter={{xs: 8, sm: 16, md: 24}} >
-						<Col xs={24} sm={24} md={24} lg={12} xl={12} style={{marginBottom: 24}}>
-							<Card bordered={false} className="DevUserCard">
-								<Card title="AP人均使用时长统计" bordered={false} style={{ width: '100%' }}
-									extra={devTimeExtra}
-								>
-									<ApTimeHis curTime={this.state.devUserCurTime}></ApTimeHis>
-								</Card>
-							</Card>
-						</Col>
-						<Col xs={24} sm={24} md={24} lg={12} xl={12} style={{marginBottom: 24}}>
-							<Card bordered={false} className="DevUserCard">
-								<Card title="AP使用流量统计" bordered={false} style={{ width: '100%' }}
-									extra={devTimeExtra}
-								>
+								</Col>
+								<Col xs={24} sm={24} md={24} lg={8} xl={8}>
+									<div className="DevUserTitle">使用人数Top10</div>
+									<ApUserHisTable></ApUserHisTable>
+								</Col>
+							</Row>
+						</Card>
+					</Card>
+					<Card bordered={false} className="DevUserCard">
+						<Card title="AP使用流量统计" bordered={false} style={{ width: '100%' }}
+							extra={devTimeExtra}
+						>
+							<Row gutter={{xs: 8, sm: 16, md: 24}} >
+								<Col xs={24} sm={24} md={24} lg={16} xl={16}>
+									<div className="DevUserTitle">使用流量趋势</div>
 									<ApFlowHis></ApFlowHis>
-								</Card>
-							</Card>
-						</Col>
-					</Row>
+								</Col>
+								<Col xs={24} sm={24} md={24} lg={8} xl={8}>
+									<div className="DevUserTitle">使用流量Top10</div>
+									<ApFlowHisTable></ApFlowHisTable>
+								</Col>
+							</Row>
+							
+						</Card>
+					</Card>
 				</div>
 			</PageLayoutContainer>
 		);

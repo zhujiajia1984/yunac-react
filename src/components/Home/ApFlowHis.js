@@ -90,7 +90,7 @@ export default class ApFlowHis extends React.Component {
 				},
 				yAxis: {
 					type: 'value',
-					name: '流量(KB/s)',
+					name: '流量(GB)',
 					splitNumber: 5,
 					boundaryGap: ['0', '10%'],
 					splitLine: {
@@ -148,7 +148,7 @@ export default class ApFlowHis extends React.Component {
 	render() {
 		return (
 			<div>
-				<div id="echarts_apFlowHis" style={{height: 300}}>
+				<div id="echarts_apFlowHis" style={{height: 400}}>
 				</div>
 			</div>
 		);

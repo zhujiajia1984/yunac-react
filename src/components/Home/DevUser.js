@@ -58,6 +58,8 @@ export default class DevUser extends React.Component {
 	setChart(time) {
 		this.xData = [];
 		this.yData = [];
+		this.yData24 = [];
+		this.yData58 = [];
 		if (time == 1) {
 			this.count = 120;
 		} else if (time == 6) {
@@ -77,7 +79,11 @@ export default class DevUser extends React.Component {
 			this.xData.unshift(curMoment.subtract(30, 'seconds').format('HH:mm:ss'));
 		}
 		for (let i = 0; i < this.count; i++) {
-			this.yData.push(this.RandomNumBoth(1000, 2000).toString());
+			let data24 = this.RandomNumBoth(1000, 2000);
+			let data58 = this.RandomNumBoth(1000, 2000);
+			this.yData24.push(data24);
+			this.yData58.push(data58);
+			this.yData.push(data24 + data58);
 		}
 		this.chartOptions = {
 				tooltip: {
@@ -85,6 +91,12 @@ export default class DevUser extends React.Component {
 					axisPointer: {
 						type: 'line',
 					},
+				},
+				legend: {
+					show: true,
+					data: ['总人数', '2.4G人数', '5.8G人数'],
+					left: 'center',
+					top: 'top'
 				},
 				dataZoom: [{
 					type: 'slider',
@@ -114,7 +126,7 @@ export default class DevUser extends React.Component {
 					},
 				},
 				series: [{
-					name: '在线人数',
+					name: '总人数',
 					type: 'line',
 					showSymbol: false,
 					hoverAnimation: false,
@@ -125,15 +137,39 @@ export default class DevUser extends React.Component {
 							color: '#3AA1FF',
 						}
 					},
-					areaStyle: {
+					// areaStyle: {
+					// 	normal: {
+					// 		color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+					// 			offset: 0,
+					// 			color: 'rgb(58, 161, 255)'
+					// 		}, {
+					// 			offset: 1,
+					// 			color: 'rgb(208, 233, 255)'
+					// 		}])
+					// 	}
+					// },
+				}, {
+					name: '2.4G人数',
+					type: 'line',
+					showSymbol: false,
+					hoverAnimation: false,
+					smooth: true,
+					data: this.yData24,
+					itemStyle: {
 						normal: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-								offset: 0,
-								color: 'rgb(58, 161, 255)'
-							}, {
-								offset: 1,
-								color: 'rgb(208, 233, 255)'
-							}])
+							color: '#68d387',
+						}
+					},
+				}, {
+					name: '5.8G人数',
+					type: 'line',
+					showSymbol: false,
+					hoverAnimation: false,
+					smooth: true,
+					data: this.yData58,
+					itemStyle: {
+						normal: {
+							color: '#975fe4',
 						}
 					},
 				}]
