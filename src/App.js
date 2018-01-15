@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import PwdReset from './pages/PwdReset';
 import Profile from './pages/Profile';
 import EditPwd from './pages/EditPwd';
+import EditWxLogin from './pages/EditWxLogin';
 import ApSetting from './pages/ApSetting';
 import TzManage from './pages/TzManage';
 import ApType from './pages/ApType';
@@ -58,6 +59,7 @@ export default class App extends React.Component {
 					<Route path="/msgCenter" component={MsgCenter} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/editPwd" component={EditPwd} />
+					<Route path="/editWxLogin" component={EditWxLogin} />
 				</div>
 			</Router>
 		);

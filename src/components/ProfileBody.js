@@ -40,7 +40,7 @@ class ProfileBody extends React.Component {
 				this.props.history.push('/editPwd');
 				break;
 			case "wxLogin":
-				alert("wxLogin");
+				this.props.history.push('/editWxLogin');
 				break;
 			case "email":
 				alert("email");

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Icon } from 'antd';
+import { Avatar, Icon, Tooltip } from 'antd';
 import EditableCell from '../components/EditableCell';
 
 // const
@@ -59,19 +59,12 @@ export default class ProfileInfo extends React.Component {
 						</div>
 						<div style={styles.infoRow}>
 							<span>用户名称：</span>
-							<EditableCell
-								editable={this.state.isEditable}
-								value={(this.state.isEditCancel)?this.state.profileOriName:this.state.profileCurName}
-								onChange={this.onChangeName.bind(this)}
-							></EditableCell>
-							{
-								(this.state.isEditable)?
-								<div>
-									<a onClick={this.onNameSave.bind(this)} style={{marginRight: 10}}>保存</a>
-									<a onClick={this.onNameCancel.bind(this)}>取消</a>
-								</div>:
-								<a onClick={this.onNameEdit.bind(this)}>编辑</a>
-							}
+							<span>张三</span>
+							<span style={{marginLeft: 8}}>
+								<Tooltip title="如需修改，请联系供应商">
+									<Icon type="info-circle-o" style={{color: "#8c8c8c"}} />
+								</Tooltip>
+							</span>
 						</div>
 						<div style={styles.infoRow}>
 							<span>注册时间：</span>
