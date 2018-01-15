@@ -1,3 +1,10 @@
+.searchExpand>.ant-card-meta-content>.ant-card-meta-detail>.ant-card-meta-title {
+	font-size: 14px;
+	margin-bottom: 24px;
+	display: flex;
+	flex-direction: row;
+}
+
 .content {
 	display: flex;
 	flex-direction: column;

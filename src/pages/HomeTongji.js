@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, DatePicker, Select, Modal, Button } from 'antd';
+import { Row, Col, Card, DatePicker, Select, Modal, Button, Icon, Radio } from 'antd';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import HomeCard from '../components/HomeCard';
 import css from './Home.css';
@@ -15,6 +15,8 @@ import ApFlowHisTable from '../components/Home/ApFlowHisTable';
 const { RangePicker } = DatePicker;
 const { Meta } = Card;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 //
 export default class HomeTongji extends React.Component {
@@ -25,10 +27,12 @@ export default class HomeTongji extends React.Component {
 		this.state = {
 			devUserCurTime: 7,
 			devFlowCurTime: 7,
-			devUserType: 'all',
 			modalTitle: '',
 			modalVisible: false,
-			devUserTypeName: ''
+			devUserExpand: false,
+			devFlowExpand: false,
+			curDevUserCondition: 'all',
+			curDevFlowCondition: 'all',
 		}
 	}
 
@@ -50,41 +54,23 @@ export default class HomeTongji extends React.Component {
 	}
 
 	//
-	onChangeDevUserType(e) {
-		if (e == "group") {
-			this.setState({
-				devUserType: e,
-				modalVisible: true,
-				modalTitle: '选择分组'
-			});
-		} else if (e == "all") {
-			this.setState({ devUserType: e, devUserTypeName: '' });
-		} else if (e == "device") {
-			this.setState({
-				devUserType: e,
-				modalVisible: true,
-				modalTitle: '选择设备'
-			});
-		}
+	devUserToggle() {
+		this.setState({ devUserExpand: !this.state.devUserExpand });
 	}
 
 	//
-	handleModalOk() {
-		if (this.state.devUserType == "group") {
-			this.setState({ modalVisible: false, devUserTypeName: '分组1' });
-		} else {
-			this.setState({ modalVisible: false, devUserTypeName: '设备名称1(ef:11:22:33:44:55:66)' });
-		}
+	devUserConChange(e) {
+		this.setState({ curDevUserCondition: e.target.value });
 	}
 
 	//
-	handleModalCancel() {
-		this.setState({ modalVisible: false });
+	devFlowToggle() {
+		this.setState({ devFlowExpand: !this.state.devFlowExpand });
 	}
 
 	//
-	onChangeDevUserName() {
-
+	devFlowConChange(e) {
+		this.setState({ curDevFlowCondition: e.target.value });
 	}
 
 	//
@@ -100,13 +86,11 @@ export default class HomeTongji extends React.Component {
 					></RangePicker>
 				</div>
 				<div>
-					<Select defaultValue="all" style={{ width: 120 }} onChange={this.onChangeDevUserType.bind(this)}>
-						<Option value="all">所有设备</Option>
-						<Option value="group">按分组</Option>
-						<Option value="device">按设备</Option>
-					</Select>
+					<a style={{ fontSize: 12 }} onClick={this.devUserToggle.bind(this)}>
+						<span>{this.state.devUserExpand ? '收起' : '更多'}</span>
+						<Icon type={this.state.devUserExpand ? 'up' : 'down'} />
+					</a>
 				</div>
-				<span style={{marginLeft:5}}>{this.state.devUserTypeName}</span>
 			</div>
 		)
 		const devTimeExtra = (
@@ -119,6 +103,86 @@ export default class HomeTongji extends React.Component {
 						defaultValue={[moment().subtract(7, 'days'), moment().subtract(1, 'days')]}
 					></RangePicker>
 				</div>
+				<div>
+					<a style={{ fontSize: 12 }} onClick={this.devFlowToggle.bind(this)}>
+						<span>{this.state.devFlowExpand ? '收起' : '更多'}</span>
+						<Icon type={this.state.devFlowExpand ? 'up' : 'down'} />
+					</a>
+				</div>
+			</div>
+		)
+		let devUserContent = null;
+		if (this.state.curDevUserCondition == "all") {
+			devUserContent = '';
+		} else if (this.state.curDevUserCondition == "group") {
+			devUserContent = (
+				<Select
+					mode="tags"
+					style={{ width: 500, marginLeft: 8 }}
+				>
+					<Option value="lucy">分组1</Option>
+					<Option value="lucy1">分组2</Option>
+					<Option value="lucy3">分组3</Option>
+				</Select>
+			)
+		} else if (this.state.curDevUserCondition == "dev") {
+			devUserContent = (
+				<Select
+					mode="tags"
+					style={{ width: 500, marginLeft: 8 }}
+				>
+					<Option value="nacy">11:22:33:44:55:66</Option>
+					<Option value="nacy1">aa:bb:cc:dd:ee:ff</Option>
+					<Option value="nacy2">5f:1e:2m:4f:8e:1d</Option>
+				</Select>
+			)
+		}
+		const devUserExpandDiv = (
+			<div>
+				<RadioGroup defaultValue="all" onChange={this.devUserConChange.bind(this)}>
+					<RadioButton value="all">所有设备</RadioButton>
+					<RadioButton value="group">按分组</RadioButton>
+					<RadioButton value="dev">按设备</RadioButton>
+				</RadioGroup>
+				{devUserContent}
+				<Button type="primary" style={{marginLeft: 8}}>查询</Button>
+			</div>
+		)
+		let devFlowContent = null;
+		if (this.state.curDevFlowCondition == "all") {
+			devFlowContent = '';
+		} else if (this.state.curDevFlowCondition == "group") {
+			devFlowContent = (
+				<Select
+					mode="tags"
+					style={{ width: 500, marginLeft: 8 }}
+				>
+					<Option value="flow1">分组1</Option>
+					<Option value="flow2">分组2</Option>
+					<Option value="flow3">分组3</Option>
+				</Select>
+			)
+		} else if (this.state.curDevFlowCondition == "dev") {
+			devFlowContent = (
+				<Select
+					mode="tags"
+					style={{ width: 500, marginLeft: 8 }}
+				>
+					<Option value="flon1">11:22:33:44:55:66</Option>
+					<Option value="flon2">aa:bb:cc:dd:ee:ff</Option>
+					<Option value="flon3">5f:1e:2m:4f:8e:1d</Option>
+				</Select>
+			)
+		}
+		const devFlowExpandDiv = (
+			<div>
+				<RadioGroup defaultValue="all" onChange={this.devFlowConChange.bind(this)}>
+					<RadioButton value="all">所有设备</RadioButton>
+					<RadioButton value="group">按分组</RadioButton>
+					<RadioButton value="dev">按设备</RadioButton>
+				</RadioGroup>
+				{devFlowContent}
+				<Button type="primary" style={{marginLeft: 8}}>查询</Button>
 			</div>
 		)
 		return (
@@ -172,38 +236,18 @@ export default class HomeTongji extends React.Component {
 					</Row>
 					<span style={{fontSize: 20, fontWeight: 500, marginBottom: 5}}
 					>历史统计</span>
-					<Modal
-						title={this.state.modalTitle}
-						visible={this.state.modalVisible}
-						closable={false}
-						maskClosable={false}
-						footer={[
-							<Button key="submit" type="primary" onClick={this.handleModalOk.bind(this)}>确认</Button>
-						]}
-					>
-						{
-							(this.state.devUserType == "group")?
-							<Select defaultValue="g1" style={{ width: '100%' }}>
-								<Option value="g1">分组1</Option>
-								<Option value="g2">分组2</Option>
-								<Option value="g3">分组3</Option>
-							</Select>:
-							<Select 
-								defaultValue="123"
-								style={{ width: '100%' }}
-								mode="tags"
-								onChange={this.onChangeDevUserName.bind(this)}
-							>
-								<Option value="123">设备名称1(ef:12:23:45:67:78)</Option>
-								<Option value="234">设备名称2(ef:12:23:45:67:78)</Option>
-								<Option value="456">设备名称3(ef:12:23:45:67:78)</Option>
-							</Select>
-						}
-					</Modal>
 					<Card bordered={false} className="DevUserCard">
 						<Card title="AP使用人数统计" bordered={false} style={{ width: '100%' }}
 							extra={devUserExtra}
 						>
+							{
+								(this.state.devUserExpand)?
+								<Meta 
+									className="searchExpand"
+									title={devUserExpandDiv}>
+								</Meta>:
+								""
+							}
 							<Row gutter={{xs: 8, sm: 16, md: 24}} >
 								<Col xs={24} sm={24} md={24} lg={16} xl={16}>
 									<div className="DevUserTitle">使用人数趋势</div>
@@ -220,6 +264,14 @@ export default class HomeTongji extends React.Component {
 						<Card title="AP使用流量统计" bordered={false} style={{ width: '100%' }}
 							extra={devTimeExtra}
 						>
+							{
+								(this.state.devFlowExpand)?
+								<Meta 
+									className="searchExpand"
+									title={devFlowExpandDiv}>
+								</Meta>:
+								""
+							}
 							<Row gutter={{xs: 8, sm: 16, md: 24}} >
 								<Col xs={24} sm={24} md={24} lg={16} xl={16}>
 									<div className="DevUserTitle">使用流量趋势</div>
