@@ -16,6 +16,7 @@ export default class ApManage extends React.Component {
 		super(props);
 	}
 	render() {
+		let ApUserMonitorChart = <ApUserMonitorChart></ApUserMonitorChart>
 		return (
 			<PageLayoutContainer 
 				selMenu={["AP管理"]}
@@ -89,7 +90,6 @@ export default class ApManage extends React.Component {
 											<Card title="连接终端数" bordered={false} style={{ width: '100%', marginBottom: 24 }}
 												extra={<div><span style={{marginRight: 10}}>自动刷新</span><Switch defaultChecked /></div>}
 											>
-												<ApUserMonitorChart></ApUserMonitorChart>
 												<ApUserMonitorTable></ApUserMonitorTable>
 											</Card>
 										</div>

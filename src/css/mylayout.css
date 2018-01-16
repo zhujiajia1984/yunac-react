@@ -141,9 +141,9 @@
 	display: flex;
 }
 
-.ant-popover-inner-content {
+/*.ant-popover-inner-content {
 	padding: 0px;
-}
+}*/
 
 .noticeItemImg>.ant-list-item-meta-avatar {
 	margin-top: 8px;

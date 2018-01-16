@@ -8,6 +8,7 @@ import {
 	Input,
 	Tooltip
 } from 'antd';
+import { withRouter } from 'react-router';
 
 // const 
 const { Column, } = Table;
@@ -16,7 +17,7 @@ const Option = Select.Option;
 const Search = Input.Search;
 
 //
-export default class ApSettingTable extends React.Component {
+class ApSettingTable extends React.Component {
 	//
 	constructor(props) {
 		super(props);
@@ -61,12 +62,17 @@ export default class ApSettingTable extends React.Component {
 	}
 
 	//
+	onEdit(e) {
+		this.props.history.push("/apConfig");
+	}
+
+	//
 	render() {
 		return (
 			<div>
 				<div style={{marginTop: 16, marginBottom: 16, display: 'flex', flex: 1}}>
 					<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-						<Button type="primary">新增配置</Button>
+						<Button type="primary" onClick={this.onEdit.bind(this)}>新增配置</Button>
 					</div>
 					<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
 						<Search
@@ -124,14 +130,17 @@ export default class ApSettingTable extends React.Component {
 						dataIndex="action"
 						render={(text, record, index)=>{
 							return <div>
-								<a href="javascript:;">修改</a>
+								<a href="javascript:;" onClick={this.onEdit.bind(this)}>修改</a>
 								<Divider type="vertical" />
 								<a href="javascript:;">删除</a>
 							</div>
-						}}
-					/>
-				</Table>
-			</div>
-		);
+		}
 	}
+	/> <
+	/Table> <
+	/div>
+);
 }
+}
+
+export default withRouter(ApSettingTable);

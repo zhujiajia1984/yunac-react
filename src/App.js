@@ -24,6 +24,8 @@ import Account from './pages/Account';
 import HomeTongji from './pages/HomeTongji';
 import MsgCenter from './pages/MsgCenter';
 import ApMonitor from './pages/ApMonitor';
+import ApConfig from './pages/ApConfig';
+import SSIDEdit from './pages/SSIDEdit';
 
 //
 export default class App extends React.Component {
@@ -42,6 +44,8 @@ export default class App extends React.Component {
 					<Route path="/hometongji" component={HomeTongji} />
 					<Route path="/apManage" component={ApManager} />
 					<Route path="/apMonitor" component={ApMonitor} />
+					<Route path="/apConfig" component={ApConfig} />
+					<Route path="/ssidEdit" component={SSIDEdit} />
 					<Route path="/peizhi" component={ApSetting} />
 					<Route path="/apType" component={ApType} />
 					<Route path="/tzManage" component={TzManage} />

@@ -19,7 +19,7 @@ export default class ApSetting extends React.Component {
 					menuTops={[
 						{key: 'apManage', title: 'AP状态管理', link: '/apManage'},
 						{key: 'peizhi', title: '配置文件管理', link: '/peizhi'},
-						{key: 'apType', title: 'AP型号管理', link: '/apType'}
+						// {key: 'apType', title: 'AP型号管理', link: '/apType'}
 					]}
 					defaultMenuKey="peizhi"
 				>

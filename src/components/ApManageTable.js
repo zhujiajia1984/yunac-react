@@ -120,6 +120,13 @@ class ApManageTable extends React.Component {
 			sorter: (a, b) => {
 				return (a.devType.length - b.devType.length);
 			},
+
+		}, {
+			title: "所属客户",
+			dataIndex: "clientName",
+			sorter: (a, b) => {
+				return (a.clientName.length - b.clientName.length);
+			},
 			render: (text, record, index) => {
 				return <EditableTableCell
 							type="select"
@@ -127,12 +134,6 @@ class ApManageTable extends React.Component {
 							onSaveText={this.onSaveDevName.bind(this)}
 				></EditableTableCell>
 			},
-		}, {
-			title: "所属客户",
-			dataIndex: "clientName",
-			sorter: (a, b) => {
-				return (a.clientName.length - b.clientName.length);
-			}
 		}, {
 			title: "在线状态",
 			dataIndex: "devStatus",
@@ -270,6 +271,9 @@ class ApManageTable extends React.Component {
 						modalContent: '确认删除选中的设备吗？'
 					});
 				}, 500)
+				break;
+			case "devSetting":
+				this.props.history.push('/apConfig');
 				break;
 			default:
 				// alert("menu unknow");

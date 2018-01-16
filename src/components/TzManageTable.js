@@ -105,6 +105,12 @@ class TzManageTable extends React.Component {
 			sorter: (a, b) => {
 				return (a.devType.length - b.devType.length);
 			},
+		}, {
+			title: "所属客户",
+			dataIndex: "clientName",
+			sorter: (a, b) => {
+				return (a.clientName.length - b.clientName.length);
+			},
 			render: (text, record, index) => {
 				return <EditableTableCell
 							type="select"
@@ -112,12 +118,6 @@ class TzManageTable extends React.Component {
 							onSaveText={this.onSaveDevName.bind(this)}
 				></EditableTableCell>
 			},
-		}, {
-			title: "所属客户",
-			dataIndex: "clientName",
-			sorter: (a, b) => {
-				return (a.clientName.length - b.clientName.length);
-			}
 		}, {
 			title: "在线状态",
 			dataIndex: "devStatus",

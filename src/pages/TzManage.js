@@ -16,7 +16,7 @@ export default class TzManage extends React.Component {
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
 					{key: 'tzManage', title: '探针状态管理', link: '/tzManage'},
-					{key: 'tzType', title: '探针型号管理', link: '/tzType'}
+					// {key: 'tzType', title: '探针型号管理', link: '/tzType'}
 				]}
 				defaultMenuKey="tzManage"
 			>
