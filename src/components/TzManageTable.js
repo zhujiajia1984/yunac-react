@@ -15,13 +15,12 @@ import {
 	Select,
 	Row,
 	Col,
+	Radio
 } from 'antd';
 import { withRouter } from 'react-router';
 import EditableTableCell from '../components/EditableTableCell';
 
 // const
-// const Column = Table;
-// const CheckboxGroup = Checkbox.Group;
 const MenuItem = Menu.Item;
 const Option = Select.Option;
 var data = [];
@@ -61,6 +60,7 @@ class TzManageTable extends React.Component {
 			devMacVisible: false,
 			isShowAlert: false,
 			selectCount: 0,
+			dlgTitle: '',
 		}
 	}
 
@@ -159,26 +159,14 @@ class TzManageTable extends React.Component {
 								<a style={{marginLeft: 1, display:'inline-block'}}>同步数据</a>
 							</MenuItem>
 							<MenuItem key="reboot">
-								<Popconfirm title="确认重启该设备吗？" 
-									okText="确认" 
-									cancelText="取消"
-									onConfirm={this.onReboot.bind(this, record)}
-								>
-									<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程重启</a>
-								</Popconfirm>
+								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>远程重启</a>
 							</MenuItem>
 							<MenuItem key="update">
 								<a style={{marginLeft: 1,  marginRight: 1, display:'inline-block'}}>固件升级</a>
 							</MenuItem>
 							<Menu.Divider />
 							<MenuItem key="deleteDev">
-								<Popconfirm title="确认删除该设备吗？" 
-									okText="确认" 
-									cancelText="取消"
-									onConfirm={this.onDeleteDev.bind(this, record)}
-								>
-									<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>删除设备</a>
-								</Popconfirm>
+								<a style={{marginLeft: 1, marginRight: 1, display:'inline-block'}}>删除设备</a>
 							</MenuItem>
 						</Menu>
 					} trigger={['click']}
@@ -220,10 +208,26 @@ class TzManageTable extends React.Component {
 					this.setState({ isLoading: false });
 				}, 1000)
 				break;
+			case "reboot":
+				this.setState({
+					updateDlgVisible: true,
+					dlgTitle: '远程重启'
+				});
+				break;
+			case "deleteDev":
+				this.setState({
+					updateDlgVisible: true,
+					dlgTitle: '删除设备'
+				});
+				break;
 			case "update":
 				this.setState({ isLoading: true });
 				setTimeout(() => {
-					this.setState({ isLoading: false, updateDlgVisible: true });
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						dlgTitle: '固件升级'
+					});
 				}, 500)
 				break;
 			default:
@@ -235,11 +239,51 @@ class TzManageTable extends React.Component {
 	//
 	onMutiOperate(values) {
 		switch (values.key) {
-			default: this.setState({ isLoading: true });
-			setTimeout(() => {
-				this.setState({ isLoading: false, updateDlgVisible: true });
-			}, 500)
-			break;
+			case "reboot":
+				this.setState({
+					updateDlgVisible: true,
+					dlgTitle: '远程重启'
+				});
+				break;
+			case "deleteDev":
+				this.setState({
+					updateDlgVisible: true,
+					dlgTitle: '删除设备'
+				});
+				break;
+			case "update":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						dlgTitle: '固件升级'
+					});
+				}, 500)
+				break;
+			case "moveGroup":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						dlgTitle: '修改分组'
+					});
+				}, 500)
+				break;
+			case "moveClient":
+				this.setState({ isLoading: true });
+				setTimeout(() => {
+					this.setState({
+						isLoading: false,
+						updateDlgVisible: true,
+						dlgTitle: '修改客户'
+					});
+				}, 500)
+				break;
+			default:
+				// alert("menu unknow");
+				break;
 		}
 	}
 
@@ -332,7 +376,18 @@ class TzManageTable extends React.Component {
 	updateConfirm() {
 		this.setState({ updateLoading: true });
 		setTimeout(() => {
-			message.success('已成功发送固件升级指令');
+			let msg = "";
+			if (this.state.dlgTitle == "固件升级") {
+				msg = "已成功发送固件升级指令";
+			} else if (this.state.dlgTitle == "远程重启") {
+				msg = "已成功发送重启指令";
+			} else if (this.state.dlgTitle == "删除设备") {
+				msg = "已成功删除选中设备";
+			} else {
+				this.setState({ updateDlgVisible: false, updateLoading: false });
+				return;
+			}
+			message.success(msg);
 			this.setState({ updateDlgVisible: false, updateLoading: false });
 		}, 500)
 	}
@@ -551,21 +606,29 @@ class TzManageTable extends React.Component {
 				</div>
 				<Modal
 					visible={this.state.updateDlgVisible}
-					title="固件升级"
+					title={this.state.dlgTitle}
 					onOk={this.updateConfirm.bind(this)}
 					onCancel={this.updateCancel.bind(this)}
-					footer={[
-						<Button key="back" onClick={this.updateCancel.bind(this)}>取消</Button>,
-						<Button key="submit" 
-							type="primary"
-							loading={this.state.updateLoading}
-							onClick={this.updateConfirm.bind(this)}
-						>确认
-						</Button>
-					]}
+					cancelText="取消"
+					okText="确认"
+					confirmLoading={this.state.updateLoading}
+					destroyOnClose={true}
 				>
-					<p>abc</p>
-					<p>def</p>
+					{
+						(this.state.dlgTitle=="固件升级" || this.state.dlgTitle=="修改分组" || this.state.dlgTitle=="修改客户")?
+						<Select defaultValue="lucy" style={{ width: '100%' }} >
+							<Option value="jack">选项1</Option>
+							<Option value="lucy">选项2</Option>
+						</Select>:""
+					}
+					{
+						(this.state.dlgTitle=="远程重启")?
+						<p>确认要重启选中的设备吗？</p>:""
+					}
+					{
+						(this.state.dlgTitle=="删除设备")?
+						<p>确认要删除选中的设备吗？</p>:""
+					}
 				</Modal>
 				{
 					(this.state.isShowAlert)?

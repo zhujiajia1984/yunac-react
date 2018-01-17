@@ -2,7 +2,11 @@ import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
 import TzSearchFormWrapper from '../components/TzSearchForm';
 import TzManageTable from '../components/TzManageTable';
+import { Radio } from 'antd';
 
+//
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 //
 export default class TzManage extends React.Component {
 	//
@@ -22,6 +26,12 @@ export default class TzManage extends React.Component {
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
+						<div className="pageAptype">
+							<RadioGroup defaultValue="a">
+								<RadioButton value="a">本级探针</RadioButton>
+								<RadioButton value="b">下级探针</RadioButton>
+							</RadioGroup>
+						</div>
 						<div className="pageApBody">
 							<TzSearchFormWrapper></TzSearchFormWrapper>
 							<TzManageTable></TzManageTable>

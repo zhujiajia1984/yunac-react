@@ -6,8 +6,11 @@ import {
 	Button,
 	Select,
 	Input,
-	Tooltip
+	message,
+	Modal,
+	Popconfirm
 } from 'antd';
+import { withRouter } from 'react-router';
 
 // const 
 const { Column, } = Table;
@@ -16,7 +19,7 @@ const Option = Select.Option;
 const Search = Input.Search;
 
 //
-export default class DevGroupTable extends React.Component {
+class DevGroupTable extends React.Component {
 	//
 	constructor(props) {
 		super(props);
@@ -28,6 +31,9 @@ export default class DevGroupTable extends React.Component {
 				defaultPageSize: 6,
 				pageSize: 6,
 			},
+			dlgVisible: false,
+			dlgTitle: '',
+			dlgLoading: false,
 		}
 	}
 
@@ -62,12 +68,47 @@ export default class DevGroupTable extends React.Component {
 	}
 
 	//
+	onDevDetail(e) {
+		this.props.history.push("/apManage");
+	}
+
+	//
+	onAddGroup(e) {
+		this.setState({ dlgVisible: true, dlgTitle: '新增分组' });
+	}
+
+	//
+	onEditGroup(e) {
+		this.setState({ dlgVisible: true, dlgTitle: '修改分组' });
+	}
+
+	//
+	onDlgConfirm(e) {
+		this.setState({ dlgLoading: true });
+		setTimeout(() => {
+			this.setState({ dlgVisible: false, dlgLoading: false });
+			message.success(this.state.dlgTitle + "成功");
+		}, 500)
+
+	}
+
+	//
+	onDlgCancel(e) {
+		this.setState({ dlgVisible: false });
+	}
+
+	//
+	onDelGroup(e) {
+		message.success("删除分组成功");
+	}
+
+	//
 	render() {
 		return (
 			<div>
 				<div style={{marginTop: 16, marginBottom: 16, display: 'flex', flex: 1}}>
 					<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-						<Button type="primary">新增分组</Button>
+						<Button type="primary" onClick={this.onAddGroup.bind(this)}>新增分组</Button>
 					</div>
 					<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
 						<Search
@@ -86,6 +127,22 @@ export default class DevGroupTable extends React.Component {
 						</div>
 					</div>
 				</div>
+				<Modal
+					visible={this.state.dlgVisible}
+					title={this.state.dlgTitle}
+					onOk={this.onDlgConfirm.bind(this)}
+					onCancel={this.onDlgCancel.bind(this)}
+					cancelText="取消"
+					okText="确认"
+					confirmLoading={this.state.dlgLoading}
+					// destroyOnClose={true}
+				>
+					<Input placeholder="分组名称"
+						style={{marginBottom: 16}}
+					/>
+					<Input placeholder="分组备注"
+					/>
+				</Modal>
 				<Table dataSource={this.state.data}
 					bordered={true}
 					loading={this.state.isLoading}
@@ -104,6 +161,9 @@ export default class DevGroupTable extends React.Component {
 						dataIndex="devNumber"
 						sorter={(a, b)=>{
 							return (a.devNumber.length - b.devNumber.length);
+						}}
+						render={(text, record, index)=>{
+							return <a href="javascript:;" onClick={this.onDevDetail.bind(this)}>{text}</a>
 						}}
 					/>
 					<Column
@@ -125,14 +185,20 @@ export default class DevGroupTable extends React.Component {
 						dataIndex="action"
 						render={(text, record, index)=>{
 							return <div>
-								<a href="javascript:;">修改</a>
+								<a href="javascript:;" onClick={this.onEditGroup.bind(this)}>修改</a>
 								<Divider type="vertical" />
-								<a href="javascript:;">删除</a>
+								<Popconfirm title="确认删除此分组吗？" onConfirm={this.onDelGroup.bind(this)}
+									okText="确认" cancelText="取消">
+									<a href="javascript:;">删除</a>
+								</Popconfirm>
 							</div>
-						}}
-					/>
-				</Table>
-			</div>
-		);
+		}
 	}
+	/> < /
+	Table > <
+		/div>
+);
 }
+}
+
+export default withRouter(DevGroupTable);

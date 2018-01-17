@@ -1,0 +1,11 @@
+.BlackWhiteTableStyle>.ant-table-wrapper>.ant-spin-nested-loading>.ant-spin-container>.ant-table>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th {
+	text-align: center;
+}
+
+.BlackWhiteTableRowStyle {
+	text-align: center;
+}
+
+.modalBlackWhiteWrapper>.ant-modal>.ant-modal-content {
+	width: 600px;
+}

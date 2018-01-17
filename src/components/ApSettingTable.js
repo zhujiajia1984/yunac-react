@@ -6,7 +6,9 @@ import {
 	Button,
 	Select,
 	Input,
-	Tooltip
+	Tooltip,
+	Popconfirm,
+	message
 } from 'antd';
 import { withRouter } from 'react-router';
 
@@ -64,6 +66,14 @@ class ApSettingTable extends React.Component {
 	//
 	onEdit(e) {
 		this.props.history.push("/apConfig");
+	}
+
+	//
+	onDelete(e) {
+		this.setState({ isLoading: true });
+		setTimeout(() => {
+			this.setState({ isLoading: false });
+		}, 500)
 	}
 
 	//
@@ -132,13 +142,19 @@ class ApSettingTable extends React.Component {
 							return <div>
 								<a href="javascript:;" onClick={this.onEdit.bind(this)}>修改</a>
 								<Divider type="vertical" />
-								<a href="javascript:;">删除</a>
+								<Popconfirm title="确认删除此配置文件吗？"
+									okText="确认"
+									cancelText="取消"
+									onConfirm={this.onDelete.bind(this)}
+								>
+									<a href="javascript:;">删除</a>
+								</Popconfirm>
 							</div>
 		}
 	}
-	/> <
-	/Table> <
-	/div>
+	/> < /
+	Table > <
+		/div>
 );
 }
 }

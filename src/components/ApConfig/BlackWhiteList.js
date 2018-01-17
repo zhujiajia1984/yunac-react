@@ -10,6 +10,7 @@ import {
 	Select,
 	Switch,
 } from 'antd';
+import BlackWhiteListTable from './BlackWhiteListTable';
 
 const Option = Select.Option;
 
@@ -21,6 +22,7 @@ export default class BlackWhiteList extends React.Component {
 		this.state = {
 			setloading: false,
 			safeSwitch: false,
+			type: 'black',
 		}
 	}
 
@@ -39,6 +41,11 @@ export default class BlackWhiteList extends React.Component {
 	}
 
 	//
+	onChangeType(e) {
+		this.setState({ type: e });
+	}
+
+	//
 	render() {
 		return (
 			<div>
@@ -53,36 +60,30 @@ export default class BlackWhiteList extends React.Component {
 					}
 				>
 					<Spin spinning={this.state.setloading}>
-						<Row gutter={16}>
-							<Col span={6}>
-								<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-									访问控制开关：
-								</div>
-							</Col>
-							<Col span={6}>
-								<Switch 
-									defaultChecked={false}
-									size="large"
-									onChange={this.onSafeChange.bind(this)}
-								/>
-							</Col>
-						</Row>
+						<div>
+							<span style={{marginRight: 8}}>访问控制开关：</span>
+							<Switch 
+								defaultChecked={false}
+								size="large"
+								onChange={this.onSafeChange.bind(this)}
+							/>
+						</div>
 						{
 							(this.state.safeSwitch)?
 							<div>
-								<Row gutter={16} style={{marginTop: 24, display: 'flex', alignItems: 'center'}}>
-								<Col span={6}>
-									<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-										访问控制类型：
-									</div>
-								</Col>
-								<Col span={6}>
-									<Select defaultValue="1" style={{ width: '100%' }} size="large">
+								<div style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
+									<span style={{marginRight: 8}}>访问控制类型：</span>
+									<Select 
+										defaultValue="1" 
+										style={{ width: 300 }} 
+										size="large"
+										onChange={this.onChangeType.bind(this)}
+									>
 										<Option value="1">黑名单（名单内的终端将无法上网）</Option>
 										<Option value="2">白名单（只允许名单内的终端上网）</Option>
 									</Select>
-								</Col>
-							</Row>
+								</div>
+								<BlackWhiteListTable type={this.state.type}></BlackWhiteListTable>
 							</div>:""
 						}
 					</Spin>

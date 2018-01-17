@@ -34,7 +34,7 @@ export default class ApConfig extends React.Component {
 				<div className="pageWrapper">
 					<div className="pageApContent">
 						<div className="card-container">
-							<Tabs type="card">
+							<Tabs type="card" defaultActiveKey="24">
 								<TabPane tab="2.4G配置" key="24">
 									<ApGeneralSetting></ApGeneralSetting>
 									<ApSsidSetting></ApSsidSetting>
@@ -43,7 +43,7 @@ export default class ApConfig extends React.Component {
 									<ApGeneralSetting></ApGeneralSetting>
 									<ApSsidSetting></ApSsidSetting>
 								</TabPane>
-								<TabPane tab="安全设置" key="control">
+								<TabPane tab="安全设置" key="safe">
 									<BlackWhiteList></BlackWhiteList>
 								</TabPane>
 							</Tabs>
