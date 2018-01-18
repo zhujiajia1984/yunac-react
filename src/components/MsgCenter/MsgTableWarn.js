@@ -6,10 +6,10 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Column, } = Table;
 const Search = Input.Search;
-const noticeType = ['离线报警']
+import { withRouter } from 'react-router';
 
 //
-export default class MsgTableWarn extends React.Component {
+class MsgTableWarn extends React.Component {
 	//
 	constructor(props) {
 		super(props);
@@ -21,69 +21,52 @@ export default class MsgTableWarn extends React.Component {
 				defaultPageSize: 6,
 				pageSize: 6,
 			},
-			readOk: false,
+			status: '',
 		}
 	}
 
 	//
 	componentDidMount() {
+		if (typeof(this.props.history.location.search) == 'undefined')
+			return;
+		let conditions = this.props.history.location.search.split("=");
+		if (conditions.length >= 2) {
+			this.setState({ status: conditions[1] });
+		}
 		this.setState({ isLoading: true, });
 		let data = [];
-		let noticeTitle = ['AP离线报警', '探针离线报警'];
 		setTimeout(() => {
 			for (let i = 0; i < 8; i++) {
 				data.push({
 					key: i.toString(),
-					title: noticeTitle[i % 2],
-					type: noticeType[i % 1],
-					date: '2017-01-30 15:12:1' + (i % 9),
+					title: (i % 2) ? "探针离线报警" : "AP离线报警",
+					startDate: '2017-01-30 15:12:1' + (i % 9),
+					endDate: '-',
 				})
 			}
 			this.setState({ isLoading: false, data: data });
-		}, 500)
+		}, 500);
 	}
-
-	//
-	onMsgTypeChange(e) {
-		let data = this.state.data;
-		if (e.target.value == "readNot") {
-			this.setState({ isLoading: true, data: [], readOk: false });
-			setTimeout(() => {
-				this.setState({ isLoading: false, data: data });
-			}, 500)
-		} else if (e.target.value == "readOk") {
-			this.setState({ isLoading: true, data: [], readOk: true });
-			setTimeout(() => {
-				this.setState({ isLoading: false, data: data, readOk: true });
-			}, 500)
-		} else if (e.target.value == "all") {
-			this.setState({ isLoading: true, data: [], readOk: false });
-			setTimeout(() => {
-				this.setState({ isLoading: false, data: data, });
-			}, 500)
-		}
-	}
-
 
 	//
 	render() {
 		const expandRowData = (
 			<div style={{fontSize: 14}}>
 					<Row gutter={16} style={{marginBottom: 10}}>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+						<Col span={3}>
+							<div style={{textAlign: 'right'}}>
 								设备MAC：
 							</div>
 						</Col>
-						<Col span={6}>
+						<Col span={4}>
 							<span>ef:aa:bb:cc:dd:ee</span>
 						</Col>
-						<Col span={6}>
-							<div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+						<Col span={3}>
+							<div style={{textAlign: 'right'}}>
 								设备名称：
 							</div>
 						</Col>
-						<Col span={6}>
+						<Col span={4}>
 							<span>测试111</span>
 						</Col>
 					</Row>
@@ -91,24 +74,13 @@ export default class MsgTableWarn extends React.Component {
 		)
 		return (
 			<div>
-				<RadioGroup onChange={this.onMsgTypeChange.bind(this)} defaultValue="readNot">
-					<RadioButton value="readNot">未读消息</RadioButton>
-					<RadioButton value="readOk">已读消息</RadioButton>
-					<RadioButton value="all">全部消息</RadioButton>
-				</RadioGroup>
 				<div style={{marginTop: 16, backgroundColor: 'white', paddingLeft: 24, paddingRight: 24, paddingTop: 16}}>
 					<div style={{marginBottom: 16, display: 'flex', flex: 1}}>
-						<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-							<Button type="default"
-								disabled={(this.state.readOk)?true:false}
-							>全部已读</Button>
-						</div>
 						<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
 							<Search
 								placeholder="请输入搜索内容"
 								onSearch={value => console.log(value)}
 								enterButton
-								style={{marginLeft: 10}}
 							/>
 						</div>
 					</div>
@@ -122,25 +94,38 @@ export default class MsgTableWarn extends React.Component {
 						}}
 					>
 						<Column
-							title="标题内容"
+							title="报警内容"
 							dataIndex="title"
-							render={(text)=>{
-								return <div style={{color: (this.state.readOk)?"#999999":"black"}}>
-									{text}
-								</div>
+							sorter= {(a, b) => {
+								return (a.title.length - b.title.length);
+							}}
+							filters={[{
+								text: 'AP离线报警',
+								value: 'ap'
+							}, {
+								text: '探针离线报警',
+								value: 'tz'
+							}]}
+						/>
+						<Column
+							title="报警开始日期"
+							dataIndex="startDate"
+							sorter= {(a, b) => {
+								return (a.startDate.length - b.startDate.length);
 							}}
 						/>
 						<Column
-							title="报警类型"
-							dataIndex="type"
-						/>
-						<Column
-							title="日期"
-							dataIndex="date"
+							title="报警结束日期"
+							dataIndex="endDate"
+							sorter= {(a, b) => {
+								return (a.endDate.length - b.endDate.length);
+							}}
 						/>
 					</Table>
-				</div> <
-			/div>
+				</div> 
+			</div>
 		);
 	}
 }
+
+export default withRouter(MsgTableWarn);

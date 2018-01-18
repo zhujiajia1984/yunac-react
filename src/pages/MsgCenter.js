@@ -20,11 +20,13 @@ export default class PwdReset extends React.Component {
 				selMenu={[]}
 				subMenu={[]}
 				collapsed={true}
+				menuTops={[
+					{key: 'msgCenter', title: '实时报警', link: '/msgCenter'},
+					{key: 'msgCenter?his=1', title: '历史报警', link: '/msgCenter?his=1'}
+				]}
+				defaultMenuKey="msgCenter"
 			>
 				<div className="pageWrapper">
-					<PageHeader
-						title="报警消息"
-					></PageHeader>
 					<div className="pageContent">
 						<MsgTableWarn></MsgTableWarn>
 					</div>

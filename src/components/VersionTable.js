@@ -1,12 +1,17 @@
 import React from 'react';
 import {
 	Table,
-	Icon,
 	Divider,
 	Button,
 	Select,
 	Input,
-	Tooltip
+	Popconfirm,
+	message,
+	Modal,
+	Row,
+	Col,
+	Upload,
+	Icon,
 } from 'antd';
 import EditableTableCell from '../components/EditableTableCell';
 
@@ -29,6 +34,8 @@ export default class VersionTable extends React.Component {
 				defaultPageSize: 6,
 				pageSize: 6,
 			},
+			dlgVisible: false,
+			dlgLoading: false,
 		}
 	}
 
@@ -45,6 +52,7 @@ export default class VersionTable extends React.Component {
 					xinghao: 'DB6000-W' + (i % 2 + 2),
 					regTime: '2017-01-30 15:12:1' + (i % 9),
 					updateTime: '2017-01-31 01:01:2' + (i % 9),
+					note: '备注' + i,
 				})
 			}
 			this.setState({ isLoading: false, data: data });
@@ -64,12 +72,36 @@ export default class VersionTable extends React.Component {
 	}
 
 	//
+	onDelVersion(e) {
+		message.success("删除固件成功");
+	}
+
+	//
+	onDlgOk(e) {
+		this.setState({ dlgLoading: true });
+		setTimeout(() => {
+			this.setState({ dlgLoading: false, dlgVisible: false });
+			message.success("固件上传成功");
+		}, 1000)
+	}
+
+	//
+	onDlgCancel(e) {
+		this.setState({ dlgVisible: false });
+	}
+
+	//
+	onUpgradeVersion(e) {
+		this.setState({ dlgVisible: true });
+	}
+
+	//
 	render() {
 		return (
 			<div>
 				<div style={{marginTop: 16, marginBottom: 16, display: 'flex', flex: 1}}>
 					<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-						<Button type="primary">上传新固件</Button>
+						<Button type="primary" onClick={this.onUpgradeVersion.bind(this)}>上传新固件</Button>
 					</div>
 					<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
 						<Search
@@ -88,6 +120,70 @@ export default class VersionTable extends React.Component {
 						</div>
 					</div>
 				</div>
+				<Modal
+					title="上传固件"
+					visible={this.state.dlgVisible}
+					onOk={this.onDlgOk.bind(this)}
+					onCancel={this.onDlgCancel.bind(this)}
+					cancelText="取消"
+					okText="确认"
+					destroyOnClose={true}
+					confirmLoading={this.state.dlgLoading}
+					maskClosable={false}
+				>
+					<Row gutter={16} style={{display: 'flex', alignItems: 'center'}}>
+						<Col span={6} style={{textAlign: 'right'}}>
+							<span>固件版本：</span>
+						</Col>
+						<Col span={14}>
+							<Input />
+						</Col>
+					</Row>
+					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
+						<Col span={6} style={{textAlign: 'right'}}>
+							<span>固件类型：</span>
+						</Col>
+						<Col span={14}>
+							<Select defaultValue="ap" style={{width: '100%'}}>
+								<Option value="ap">AP</Option>
+								<Option value="tz">探针</Option>
+							</Select>
+						</Col>
+					</Row>
+					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
+						<Col span={6} style={{textAlign: 'right'}}>
+							<span>适配设备类型：</span>
+						</Col>
+						<Col span={14}>
+							<Select defaultValue="ap" style={{width: '100%'}}>
+								<Option value="ap">DB6000-GAC</Option>
+								<Option value="tz">DB6000-GAC2</Option>
+							</Select>
+						</Col>
+					</Row>
+					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
+						<Col span={6} style={{textAlign: 'right'}}>
+							<span>上传固件：</span>
+						</Col>
+						<Col span={14}>
+							<Upload
+								name='version123'
+								accept='.png'
+								action='/abc'
+							>
+								<Button><Icon type="upload" />点击上传</Button>
+							</Upload>
+						</Col>
+					</Row>
+					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
+						<Col span={6} style={{textAlign: 'right'}}>
+							<span>备注：</span>
+						</Col>
+						<Col span={14}>
+							<Input />
+						</Col>
+					</Row>
+				</Modal>
 				<Table dataSource={this.state.data}
 					bordered={true}
 					loading={this.state.isLoading}
@@ -95,7 +191,7 @@ export default class VersionTable extends React.Component {
 					pagination={this.state.pagination}
 				>
 					<Column
-						title="版本名称"
+						title="固件版本"
 						dataIndex="name"
 						sorter={(a, b)=>{
 							return (a.name.length - b.name.length);
@@ -125,7 +221,7 @@ export default class VersionTable extends React.Component {
 						}}
 					/>
 					<Column
-						title="适配固件型号"
+						title="适配设备类型"
 						dataIndex="xinghao"
 						sorter={(a, b)=>{
 							return (a.xinghao.length - b.xinghao.length);
@@ -142,6 +238,19 @@ export default class VersionTable extends React.Component {
 						}}
 					/>
 					<Column
+						title="备注"
+						dataIndex="note"
+						sorter={(a, b)=>{
+							return (a.note.length - b.note.length);
+						}}
+						render={(text, record, index)=>{
+							return <EditableTableCell
+								type="input"
+								value={text}
+							></EditableTableCell>
+						}}
+					/>
+					<Column
 						title="创建时间"
 						dataIndex="regTime"
 						sorter={(a, b)=>{
@@ -153,14 +262,20 @@ export default class VersionTable extends React.Component {
 						dataIndex="action"
 						render={(text, record, index)=>{
 							return <div>
-								<a href="javascript:;">下载</a>
+								<Popconfirm title="确认下载此固件版本吗？" okText="确认" cancelText="取消">
+									<a href="javascript:;">下载</a>
+								</Popconfirm>
 								<Divider type="vertical" />
-								<a href="javascript:;">删除</a>
+								<Popconfirm title="确认删除此固件版本吗？" onConfirm={this.onDelVersion.bind(this)}
+									okText="确认" cancelText="取消">
+									<a href="javascript:;">删除</a>
+								</Popconfirm>
 							</div>
-						}}
-					/>
-				</Table>
-			</div>
-		);
+		}
 	}
+	/> < /
+	Table > <
+		/div>
+);
+}
 }

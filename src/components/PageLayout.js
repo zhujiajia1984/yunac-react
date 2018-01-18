@@ -158,7 +158,7 @@ class PageLayout extends React.Component {
 						<div className={(this.state.collapsed)?"HeaderRightMini":"HeaderRight"}>
 							<div style={{height: '100%', display:'flex'}}>
 								<Popover placement="bottomRight"
-									title="报警消息"
+									title="实时报警"
 									content={noticeContent}
 									trigger="click"
 								>

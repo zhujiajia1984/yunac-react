@@ -15,7 +15,7 @@ export default class SubClientManage extends React.Component {
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
 					{key: 'subClient', title: '下级客户管理', link: '/subClient'},
-					{key: 'subRole', title: '客户角色管理', link: '/subRole'}
+					// {key: 'subRole', title: '客户角色管理', link: '/subRole'}
 				]}
 				defaultMenuKey="subClient"
 			>
