@@ -10,6 +10,10 @@ class LoginForm extends React.Component {
 	//
 	constructor(props) {
 		super(props);
+		this.state = {
+			isShowCaptcha: false,
+			captchaUrl: "https://weiquaninfo.cn/captcha",
+		}
 	}
 
 	//
@@ -17,7 +21,13 @@ class LoginForm extends React.Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				this.props.onSubmitForm(values);
+				if (values.password == '123456') {
+					this.setState({ isShowCaptcha: true });
+					return;
+				} else {
+					this.setState({ isShowCaptcha: false });
+					this.props.onSubmitForm(values);
+				}
 				// this.setState({ isLoading: true });
 				// setTimeout(() => {
 				// 	this.setState({ isLoading: false });
@@ -25,6 +35,13 @@ class LoginForm extends React.Component {
 				// }, 500)
 			}
 		});
+	}
+
+	//
+	onChangeCaptcha(e) {
+		e.preventDefault();
+		let url = this.state.captchaUrl + '?time=' + Math.random();
+		this.setState({ captchaUrl: url });
 	}
 
 	//
@@ -63,6 +80,32 @@ class LoginForm extends React.Component {
 					<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码" type="password" size="large"/>
 				)}
 				</FormItem>
+				{
+					(this.state.isShowCaptcha)?
+					<div>
+						<FormItem>
+						{getFieldDecorator('captcha', {
+							rules: [{
+								min: 0,
+								max: 6,
+								required: true,
+								message: '请输入格式正确的验证码' 
+								}],
+							})(
+							<Input placeholder="请输入下图中的验证码" size="large"/>
+						)}
+						</FormItem>
+						<div style={{width: '100%', height: 60, marginBottom: 24, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+							<div style={{width: 256}}>
+								<img src={this.state.captchaUrl} style={{height: 60, width: 256}}/>
+							</div>
+							<div style={{flex: 1, display: 'flex', justifyContent: 'center'}}>
+								<a onClick={this.onChangeCaptcha.bind(this)}>看不清,换一个</a>
+							</div>
+						</div>
+					</div>:
+					<div></div>
+				}
 				<FormItem>
 					<Button 
 						type="primary"

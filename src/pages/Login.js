@@ -89,7 +89,7 @@ export default class Login extends React.Component {
 				<LoginMain>
 					<Tabs defaultActiveKey="account" className="loginMain">
 						<TabPane tab="账号登录" key="account">
-							<LoginFormWrapper 
+							<LoginFormWrapper
 								onSubmitForm={this.onSubmitForm.bind(this)}
 								onForgetPwd={this.onForgetPwd.bind(this)}
 								isLoading={this.state.isLoginLoading}

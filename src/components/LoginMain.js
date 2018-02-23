@@ -69,7 +69,7 @@ const styles = {
 	contentWrapper: {
 		display: 'flex',
 		width: width,
-		height: height,
+		// height: height,
 		backgroundColor: 'white',
 	},
 	content: {
