@@ -37,11 +37,7 @@ class PageHeader extends React.Component {
 						</Breadcrumb>
 					</div>
 				}
-				<div style={styles.pageHeader}>
-					<div style={styles.pageTitle}>
-						{this.props.title}
-					</div>
-				</div>
+				
 			</div>
 		);
 	}
@@ -49,7 +45,7 @@ class PageHeader extends React.Component {
 
 //
 PageHeader.propTypes = {
-	title: PropTypes.string.isRequired,
+	// title: PropTypes.string.isRequired,
 	naviDatas: PropTypes.array,
 };
 
@@ -67,7 +63,7 @@ const styles = {
 		fontWeight: 500,
 	},
 	pageBreadcrumb: {
-		padding: '5px 32px 0px 32px',
+		padding: '12px 0px 0px 0px',
 		// marginBottom: 16,
 	}
 }

@@ -1,22 +1,26 @@
 import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
-import SsidEditForm from '../components/ApConfig/SsidEditForm';
+import DevMapContainer from '../components/MapControl/DevMapContainer';
 import PageHeader from '../components/PageHeader';
 
 //
-export default class SSIDEdit extends React.Component {
+export default class DevMap extends React.Component {
+	//
 	constructor(props) {
 		super(props);
 	}
+
+
+	//
 	render() {
 		return (
 			<PageLayoutContainer 
 				selMenu={["AP管理"]}
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
-					{key: 'ssidEdit', title: 'SSID编辑', link: '/ssidEdit'},
+					{key: 'map', title: '设备地图显示', link: '/devmap'},
 				]}
-				defaultMenuKey="ssidEdit"
+				defaultMenuKey="map"
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
@@ -24,11 +28,10 @@ export default class SSIDEdit extends React.Component {
 							title=""
 							naviDatas={[
 								{name: "AP管理", link: "/apManage", type: "common"},
-								{name: "远程配置", link: "/apConfig", type: "common"},
-								{name: "ssid配置", link: "", type: "current"}
+								{name: "地图", link: "", type: "current"}
 							]}
 						></PageHeader>
-						<SsidEditForm></SsidEditForm>
+						<DevMapContainer></DevMapContainer>
 					</div>
 				</div>
 			</PageLayoutContainer>

@@ -510,6 +510,12 @@ class ApManageTable extends React.Component {
 	}
 
 	//
+	onShowMap(e) {
+		e.preventDefault();
+		this.props.history.push('/devmap');
+	}
+
+	//
 	render() {
 		const selectedRowKeys = this.state.selectedRowKeys;
 		const selMessage1 = (
@@ -540,7 +546,7 @@ class ApManageTable extends React.Component {
 						<Col span={6}>
 							<span>121.1234(经度)，</span>
 							<span style={{marginRight: 5}}>23.123(纬度)</span>
-							<a href="javascript:;">地图</a>
+							<a href="javascript:;" onClick={this.onShowMap.bind(this)}>地图</a>
 						</Col>
 					</Row>
 					<Row gutter={16} style={{marginBottom: 10}}>

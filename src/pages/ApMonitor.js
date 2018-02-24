@@ -6,6 +6,7 @@ import ApMonitorCpu from '../components/ApMonitor/ApMonitorCpu';
 import ApMonitorFlow from '../components/ApMonitor/ApMonitorFlow';
 import ApUserMonitorChart from '../components/ApMonitor/ApUserMonitorChart';
 import ApUserMonitorTable from '../components/ApMonitor/ApUserMonitorTable';
+import PageHeader from '../components/PageHeader';
 
 // const
 const TabPane = Tabs.TabPane;
@@ -28,6 +29,13 @@ export default class ApManage extends React.Component {
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
+						<PageHeader
+							title=""
+							naviDatas={[
+								{name: "AP管理", link: "/apManage", type: "common"},
+								{name: "实时监控", link: "", type: "current"}
+							]}
+						></PageHeader>
 						<div className="pageApMonitorBody">
 							<div className="apMonitorInfo">
 								<Card title="基础信息" bordered={false} style={{ width: '100%', marginBottom: 24 }}>

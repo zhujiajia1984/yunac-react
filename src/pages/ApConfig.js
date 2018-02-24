@@ -5,6 +5,7 @@ import { Tabs, Card, Popconfirm, message, } from 'antd';
 import ApGeneralSetting from '../components/ApConfig/ApGeneralSetting';
 import ApSsidSetting from '../components/ApConfig/ApSsidSetting';
 import BlackWhiteList from '../components/ApConfig/BlackWhiteList';
+import PageHeader from '../components/PageHeader';
 
 // const
 const TabPane = Tabs.TabPane;
@@ -33,6 +34,13 @@ export default class ApConfig extends React.Component {
 			>
 				<div className="pageWrapper">
 					<div className="pageApContent">
+						<PageHeader
+							title=""
+							naviDatas={[
+								{name: "AP管理", link: "/apManage", type: "common"},
+								{name: "远程配置", link: "", type: "current"}
+							]}
+						></PageHeader>
 						<div className="card-container">
 							<Tabs type="card" defaultActiveKey="24">
 								<TabPane tab="2.4G配置" key="24">

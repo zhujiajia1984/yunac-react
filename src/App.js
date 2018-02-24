@@ -26,6 +26,7 @@ import MsgCenter from './pages/MsgCenter';
 import ApMonitor from './pages/ApMonitor';
 import ApConfig from './pages/ApConfig';
 import SSIDEdit from './pages/SSIDEdit';
+import DevMap from './pages/DevMap';
 
 //
 export default class App extends React.Component {
@@ -43,6 +44,7 @@ export default class App extends React.Component {
 					<Route path="/index" component={Home} />
 					<Route path="/hometongji" component={HomeTongji} />
 					<Route path="/apManage" component={ApManager} />
+					<Route path="/devmap" component={DevMap} />
 					<Route path="/apMonitor" component={ApMonitor} />
 					<Route path="/apConfig" component={ApConfig} />
 					<Route path="/ssidEdit" component={SSIDEdit} />

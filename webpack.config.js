@@ -13,6 +13,7 @@ module.exports = {
     },
     externals: {
         'WxLogin': 'WxLogin',
+        'BMap': 'BMap'
     },
     devtool: 'source-map', // source-map
     // devtool: 'none',

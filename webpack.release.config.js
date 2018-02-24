@@ -9,6 +9,7 @@ module.exports = {
     devtool: 'none',
     externals: {
         'WxLogin': 'WxLogin',
+        'BMap': 'BMap'
     },
     module: {
         rules: [{
