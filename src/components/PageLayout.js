@@ -2,12 +2,13 @@ import React from 'react';
 import { Layout, Menu, Icon, Dropdown, Avatar, Badge, Popover, Tabs, List } from 'antd';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-import css from '../css/mylayout.css';
+import '../css/mylayout.css';
+import '../../dist/assets/iconfont/iconfont.css';
+import './PageLayout.css';
 import { withRouter } from 'react-router';
 
 // const
 const { Header, Content, Footer, Sider } = Layout;
-const TabPane = Tabs.TabPane;
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
 const siderWidth = 256;
@@ -117,11 +118,11 @@ class PageLayout extends React.Component {
 					>
 						{this.props.menuData.map((item) =>{
 							return (item.type=='sub')
-							?<SubMenu key={item.name} title={<span><Icon type={item.icon} /><span>{item.name}</span></span>}>
+							?<SubMenu key={item.name} title={<span><i className={'iconfont icon-' + item.icon + ' myIcon'}></i><span>{item.name}</span></span>}>
 								{item.items.map((item) =>(
 									<Item key={item.name}>
 										<Link to={item.path}>
-											<Icon type={item.icon} />
+											<i className={'iconfont icon-' + item.icon + ' myIcon'}></i>
 											<span>{item.name}</span>
 										</Link>
 									</Item>
@@ -129,7 +130,7 @@ class PageLayout extends React.Component {
 							</SubMenu>
 							:<Item key={item.name}>
 								<Link to={item.path}>
-									<Icon type={item.icon} />
+									<i className={'iconfont icon-' + item.icon + ' myIcon'}></i>
 									<span>{item.name}</span>
 								</Link>
 							</Item>

@@ -1,0 +1,19 @@
+.myIcon {
+	min-width: 14px;
+	font-size: 14px;
+	margin-right: 10px;
+}
+
+.ant-menu-inline-collapsed>.ant-menu-item>a>.myIcon,
+.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title>span>.myIcon {
+	font-size: 16px;
+	line-height: 40px;
+	margin: 0px;
+}
+
+.ant-menu-inline-collapsed>.ant-menu-item>a>.myIcon+span,
+.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title>span>.myIcon+span {
+	max-width: 0px;
+	display: inline-block;
+	opacity: 0;
+}
