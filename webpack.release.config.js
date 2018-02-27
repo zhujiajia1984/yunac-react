@@ -32,6 +32,14 @@ module.exports = {
                     outputPath: '/assets/images/'
                 }
             }]
+        }, {
+            test: /\.(eot|woff|woff2|svg|ttf)\??.*$/,
+            use: [{
+                loader: "file-loader",
+                options: {
+                    outputPath: '/assets/iconfont/'
+                }
+            }, ]
         }, ]
     }
 }
