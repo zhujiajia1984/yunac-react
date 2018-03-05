@@ -9,6 +9,7 @@ import {
 	Tooltip,
 	Radio
 } from 'antd';
+import { withRouter } from 'react-router';
 
 // const 
 const { Column, } = Table;
@@ -19,7 +20,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 //
-export default class ApUserHisTable extends React.Component {
+class ApUserHisTable extends React.Component {
 	//
 	constructor(props) {
 		super(props);
@@ -50,6 +51,12 @@ export default class ApUserHisTable extends React.Component {
 	}
 
 	//
+	onRankDev(e) {
+		e.preventDefault();
+		this.props.history.push("/apMonitor");;
+	}
+
+	//
 	render() {
 		return (
 			<div>
@@ -74,6 +81,9 @@ export default class ApUserHisTable extends React.Component {
 					<Column
 						title="设备名称"
 						dataIndex="name"
+						render={(text, record, index)=>{
+							return <a href="#" onClick={this.onRankDev.bind(this)}>{text}</a>
+						}}
 					/>
 					<Column
 						title="使用人数"
@@ -84,3 +94,5 @@ export default class ApUserHisTable extends React.Component {
 		);
 	}
 }
+
+export default withRouter(ApUserHisTable);

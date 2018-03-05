@@ -42,6 +42,7 @@ class MsgTableWarn extends React.Component {
 					title: (i % 2) ? "探针离线报警" : "AP离线报警",
 					startDate: '2017-01-30 15:12:1' + (i % 9),
 					endDate: '-',
+					devInfo: 'ec:ab:mm:ss:dd:56' + '(测试123)'
 				})
 			}
 			this.setState({ isLoading: false, data: data });
@@ -89,10 +90,17 @@ class MsgTableWarn extends React.Component {
 						loading={this.state.isLoading}
 						locale={{filterConfirm: '确认', filterReset: '清空', emptyText: '暂无数据'}}
 						pagination={this.state.pagination}
-						expandedRowRender={(record) => {
-							return expandRowData;
-						}}
+						// expandedRowRender={(record) => {
+						// 	return expandRowData;
+						// }}
 					>
+						<Column
+							title="报警源"
+							dataIndex="devInfo"
+							sorter= {(a, b) => {
+								return (a.devInfo.length - b.devInfo.length);
+							}}
+						/>
 						<Column
 							title="报警内容"
 							dataIndex="title"

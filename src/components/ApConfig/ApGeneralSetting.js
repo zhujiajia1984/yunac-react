@@ -71,7 +71,7 @@ export default class ApGeneralSetting extends React.Component {
 								<span>无线信道：</span>
 							</Col>
 							<Col span={9}>
-								<Select defaultValue="6" style={{ width: '100%' }}>
+								<Select defaultValue="6" style={{ width: '100%' }} disabled>
 									<Option value="1">1(9999MHz)</Option>
 									<Option value="2">2(9999MHz)</Option>
 									<Option value="6">6(9999MHz)</Option>

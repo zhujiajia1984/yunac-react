@@ -199,18 +199,7 @@ export default class HomeTongji extends React.Component {
 					<span style={{fontSize: 20, fontWeight: 500, marginBottom: 5}}
 					>昨日数据</span>
 					<Row gutter={{xs: 8, sm: 16, md: 24}} style={{marginBottom: 0}}>
-						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-							<HomeCard name="设备总数"
-								detail="截止昨日24点的设备总数"
-								content="123"
-								imageUrl="https://weiquaninfo.cn/images/11.png"
-								f1Title="AP数量："
-								f1Content="100"
-								f2Title="探针数量："
-								f2Content="23"
-							></HomeCard>
-						</Col>
-						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
 							<HomeCard name="AP使用人数"
 								detail="昨日使用AP的总用户人数"
 								content="5843"
@@ -221,7 +210,7 @@ export default class HomeTongji extends React.Component {
 								f2Content="1500"
 							></HomeCard>
 						</Col>
-						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={12}>
 							<HomeCard name="AP使用流量"
 								detail="昨日AP的总使用流量（上行+下行）"
 								content="15.4"
