@@ -9,7 +9,8 @@ module.exports = {
     devtool: 'none',
     externals: {
         'WxLogin': 'WxLogin',
-        'BMap': 'BMap'
+        'BMap': 'BMap',
+        'BMapLib': 'BMapLib'
     },
     module: {
         rules: [{
@@ -23,6 +24,13 @@ module.exports = {
             use: [
                 { loader: "style-loader" },
                 { loader: "css-loader" },
+            ]
+        }, {
+            test: /\.less$/,
+            use: [
+                { loader: "style-loader" },
+                { loader: "css-loader" },
+                { loader: "less-loader" }
             ]
         }, {
             test: /\.(png|jpg|gif)$/,

@@ -1,20 +1,22 @@
 import React from 'react';
 import {
-	Table,
-	Icon,
-	Divider,
-	Button,
-	Select,
-	Input,
-	Popconfirm,
-	message,
-	Modal,
-	Row,
-	Col,
-	Tree,
+    Table,
+    Icon,
+    Divider,
+    Button,
+    Select,
+    Input,
+    Popconfirm,
+    message,
+    Modal,
+    Row,
+    Col,
+    Tree,
+    Form,
 } from 'antd';
 import { withRouter } from 'react-router';
-import EditableTableCell from '../components/EditableTableCell';
+import EditableTableCell from '../../components/EditableTableCell';
+import './SubClientTable.less'
 
 // const 
 const { Column, } = Table;
@@ -22,103 +24,104 @@ const data = [];
 const Option = Select.Option;
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
+const FormItem = Form.Item;
 
 //
 class SubClientTable extends React.Component {
-	//
-	constructor(props) {
-		super(props);
-		this.state = {
-			isLoading: false,
-			data: [],
-			pagination: {
-				defaultCurrent: 1,
-				defaultPageSize: 6,
-				pageSize: 6,
-			},
-			dlgTitle: '',
-			dlgVisible: false,
-			dlgLoading: false,
-		}
-	}
+    //
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            data: [],
+            pagination: {
+                defaultCurrent: 1,
+                defaultPageSize: 6,
+                pageSize: 6,
+            },
+            dlgTitle: '',
+            dlgVisible: false,
+            dlgLoading: false,
+        }
+    }
 
-	//
-	componentDidMount() {
-		this.setState({ isLoading: true, });
-		setTimeout(() => {
-			for (let i = 0; i < 100; i++) {
-				data.push({
-					key: i.toString(),
-					name: '客户' + i,
-					note: '全称' + i,
-					regTime: '2017-01-30 15:12:1' + (i % 9),
-					role: '角色' + (i % 2),
-					accountNum: i,
-					devNum: i,
-				})
-			}
-			this.setState({ isLoading: false, data: data });
-		}, 500)
-	}
+    //
+    componentDidMount() {
+        this.setState({ isLoading: true, });
+        setTimeout(() => {
+            for (let i = 0; i < 100; i++) {
+                data.push({
+                    key: i.toString(),
+                    name: '客户' + i,
+                    note: '全称' + i,
+                    regTime: '2017-01-30 15:12:1' + (i % 9),
+                    role: '角色' + (i % 2),
+                    accountNum: i,
+                    devNum: i,
+                })
+            }
+            this.setState({ isLoading: false, data: data });
+        }, 500)
+    }
 
-	//
-	onChangePageSize(value) {
-		let pagination = this.state.pagination;
-		if (value == "all") {
-			pagination.pageSize = this.state.data.length;
-			this.setState({ pagination: pagination });
-		} else {
-			pagination.pageSize = parseInt(value);
-			this.setState({ pagination: pagination });
-		}
-	}
+    //
+    onChangePageSize(value) {
+        let pagination = this.state.pagination;
+        if (value == "all") {
+            pagination.pageSize = this.state.data.length;
+            this.setState({ pagination: pagination });
+        } else {
+            pagination.pageSize = parseInt(value);
+            this.setState({ pagination: pagination });
+        }
+    }
 
-	//
-	onSubAccount() {
-		this.props.history.push('/subAccount');
-	}
+    //
+    onSubAccount() {
+        this.props.history.push('/subAccount');
+    }
 
-	//
-	onDelClient() {
-		message.success("已成功删除客户");
-	}
+    //
+    onDelClient() {
+        message.success("已成功删除客户");
+    }
 
-	//
-	onAddClient() {
-		this.setState({
-			dlgTitle: '新增客户',
-			dlgVisible: true,
-		})
-	}
+    //
+    onAddClient() {
+        this.setState({
+            dlgTitle: '新增客户',
+            dlgVisible: true,
+        })
+    }
 
-	//
-	onEditClient() {
-		this.setState({
-			dlgTitle: '修改客户',
-			dlgVisible: true,
-		})
-	}
+    //
+    onEditClient() {
+        this.setState({
+            dlgTitle: '修改客户',
+            dlgVisible: true,
+        })
+    }
 
-	//
-	dlgOk() {
-		this.setState({ dlgLoading: true });
-		setTimeout(() => {
-			this.setState({
-				dlgLoading: false,
-				dlgVisible: true,
-			})
-		}, 500)
-	}
+    //
+    dlgOk() {
+        this.setState({ dlgLoading: true });
+        setTimeout(() => {
+            this.setState({
+                dlgLoading: false,
+                dlgVisible: true,
+            })
+        }, 500)
+    }
 
-	//
-	dlgCancel() {
-		this.setState({ dlgVisible: false });
-	}
+    //
+    dlgCancel() {
+        this.setState({ dlgVisible: false });
+    }
 
-	//
-	render() {
-		const authTree = (
-			<div>
+    //
+    render() {
+        const authTree = (
+            <div>
 				<Row gutter={16}>
 					<Col span={3} style={{textAlign: 'right'}}>
 						<span>客户权限：</span>
@@ -145,9 +148,9 @@ class SubClientTable extends React.Component {
 					</Col>
 				</Row>
 			</div>
-		)
-		return (
-			<div>
+        )
+        return (
+            <div>
 				<div style={{marginTop: 16, marginBottom: 16, display: 'flex', flex: 1}}>
 					<div style={{flex: 1, display: 'flex', alignItems: 'center'}}>
 						<Button type="primary" onClick={this.onAddClient.bind(this)}>新增客户</Button>
@@ -179,22 +182,17 @@ class SubClientTable extends React.Component {
 					destroyOnClose={true}
 					confirmLoading={this.state.dlgLoading}
 				>
-					<Row gutter={16} style={{display: 'flex', alignItems: 'center'}}>
-						<Col span={6} style={{textAlign: 'right'}}>
-							<span>客户简称：</span>
-						</Col>
-						<Col span={14}>
-							<Input />
-						</Col>
-					</Row>
-					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
-						<Col span={6} style={{textAlign: 'right'}}>
-							<span>客户全称：</span>
-						</Col>
-						<Col span={14}>
-							<Input />
-						</Col>
-					</Row>
+					<Form layout="inline" className="FormAddClient">
+						<FormItem
+							label="客户全称"
+							validateStatus=""
+							help=""
+						>
+							<Input size="default"
+								placeholder="必填，64个字符以内"
+							/>
+						</FormItem>
+					</Form>
 					<Row gutter={16} style={{display: 'flex', marginTop: 24}}>
 						<Col span={6} style={{textAlign: 'right'}}>
 							<span>客户权限：</span>
@@ -314,11 +312,11 @@ class SubClientTable extends React.Component {
 									<a href="javascript:;">删除</a>
 								</Popconfirm>
 							</div>
-		}
-	}
-	/> < /
-	Table > <
-		/div>
+        }
+    }
+    /> < /
+    Table > <
+        /div>
 );
 }
 }

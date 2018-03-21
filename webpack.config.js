@@ -13,7 +13,8 @@ module.exports = {
     },
     externals: {
         'WxLogin': 'WxLogin',
-        'BMap': 'BMap'
+        'BMap': 'BMap',
+        'BMapLib': 'BMapLib',
     },
     devtool: 'source-map', // source-map
     // devtool: 'none',
@@ -35,7 +36,14 @@ module.exports = {
             use: [
                 { loader: "style-loader" },
                 { loader: "css-loader" },
-                { loader: "less-loader" },
+                {
+                    loader: "less-loader",
+                    // options: {
+                    //     modifyVars: {
+                    //         '@primary-color': '#1DA57A',
+                    //     }
+                    // }
+                }
             ]
         }, {
             test: /\.(png|jpg|gif)$/,
