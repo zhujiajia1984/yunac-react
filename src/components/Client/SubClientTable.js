@@ -16,11 +16,12 @@ import {
 } from 'antd';
 import { withRouter } from 'react-router';
 import EditableTableCell from '../../components/EditableTableCell';
-import './SubClientTable.less'
+import './SubClientTable.less';
+import moment from 'moment';
 
 // const 
 const { Column, } = Table;
-const data = [];
+let data = [];
 const Option = Select.Option;
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
@@ -42,25 +43,47 @@ class SubClientTable extends React.Component {
             dlgTitle: '',
             dlgVisible: false,
             dlgLoading: false,
+            validateNameStatus: '',
+            validateNameHelp: '',
+            clientName: '',
+            clientShortName: ''
         }
     }
 
     //
     componentDidMount() {
+        data = [];
         this.setState({ isLoading: true, });
         setTimeout(() => {
-            for (let i = 0; i < 100; i++) {
-                data.push({
-                    key: i.toString(),
-                    name: '客户' + i,
-                    note: '全称' + i,
-                    regTime: '2017-01-30 15:12:1' + (i % 9),
-                    role: '角色' + (i % 2),
-                    accountNum: i,
-                    devNum: i,
+            // let time = moment("2018-03-21T09:12:38.350Z");
+            // console.log(time.format("YYYY-MM-DD HH:mm:ss"));
+            let url = `https://test.weiquaninfo.cn/mongo/clients`;
+            fetch(url, { method: "GET", })
+                .then(res => {
+                    let contentType = res.headers.get("Content-Type");
+                    if (res.status == 200 && contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error(`status:${res.status} contentType:${contentType}`);
+                    }
                 })
-            }
-            this.setState({ isLoading: false, data: data });
+                .then(resJson => {
+                    // 返回
+                    resJson.map((item) => {
+                        data.push({
+                            key: item._id,
+                            name: item.name,
+                            shortName: typeof(item.shortName) == 'undefined' ? '' : item.shortName,
+                            createTime: item.createTime,
+                            lastModified: item.lastModified
+                        })
+                    });
+                    this.setState({ isLoading: false, data: data });
+                })
+                .catch(error => {
+                    alert(`查询客户信息失败：${error.message}`);
+                    this.setState({ isLoading: false });
+                })
         }, 500)
     }
 
@@ -103,13 +126,102 @@ class SubClientTable extends React.Component {
     }
 
     //
+    getLength(str) {
+        return str.replace(/[\u0391-\uFFE5]/g, "aa").length;
+    }
+
+    //
+    onCheckClientName(e) {
+        let nameLen = this.getLength(e.target.value);
+        if (nameLen < 1 || nameLen > 64) {
+            this.setState({
+                validateNameStatus: 'error',
+                validateNameHelp: '请输入正确的客户全称（64个字符以内）'
+            });
+        } else {
+            let url = `https://test.weiquaninfo.cn/mongo/clients?name=${e.target.value}`;
+            fetch(url, { method: "GET", })
+                .then(res => {
+                    let contentType = res.headers.get("Content-Type");
+                    if (res.status == 200 && contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error(`status:${res.status} contentType:${contentType}`);
+                    }
+                })
+                .then(resJson => {
+                    // 返回
+                    if (resJson.length > 0) {
+                        this.setState({
+                            validateNameStatus: 'error',
+                            validateNameHelp: '已存在相同名称客户，请确认！'
+                        });
+                    } else {
+                        this.setState({
+                            validateNameStatus: 'success',
+                            validateNameHelp: ''
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert(`查询客户全称失败：${error.message}`);
+                })
+        }
+    }
+    onFocusClientName(e) {
+        this.setState({ validateNameStatus: '', validateNameHelp: '' });
+    }
+    onChangeClientName(e) {
+        this.setState({ clientName: e.target.value, });
+    }
+    onChangeClientShortName(e) {
+        this.setState({ clientShortName: e.target.value, });
+    }
+
+    //
     dlgOk() {
         this.setState({ dlgLoading: true });
         setTimeout(() => {
-            this.setState({
-                dlgLoading: false,
-                dlgVisible: true,
-            })
+            // 判断当前名称是否已存在
+            if (this.state.validateNameStatus != "success") {
+                this.setState({ dlgLoading: false })
+            } else {
+                // 新增客户
+                let url = `https://test.weiquaninfo.cn/mongo/clients`;
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: this.state.clientName,
+                            shortName: this.state.clientShortName
+                        }),
+                    })
+                    .then(res => {
+                        let contentType = res.headers.get("Content-Type");
+                        if (res.status == 201 && contentType && contentType.includes("application/json")) {
+                            return res.json();
+                        } else {
+                            throw new Error(`status:${res.status} contentType:${contentType}`);
+                        }
+                    })
+                    .then(resJson => {
+                        // 返回成功数据
+                        data.unshift({
+                            key: resJson._id,
+                            name: resJson.name,
+                            shortName: typeof(resJson.shortName) == 'undefined' ? '' : resJson.shortName,
+                            createTime: resJson.createTime,
+                            lastModified: resJson.lastModified
+                        })
+                        this.setState({ dlgLoading: false, dlgVisible: false, data: data });
+                        message.success("已成功新增客户");
+                    })
+                    .catch(error => {
+                        alert(`新增客户失败：${error.message}`);
+                    })
+            }
         }, 500)
     }
 
@@ -185,11 +297,23 @@ class SubClientTable extends React.Component {
 					<Form layout="inline" className="FormAddClient">
 						<FormItem
 							label="客户全称"
-							validateStatus=""
-							help=""
+							validateStatus={this.state.validateNameStatus}
+							help={this.state.validateNameHelp}
+							hasFeedback={true}
 						>
 							<Input size="default"
 								placeholder="必填，64个字符以内"
+								onBlur={this.onCheckClientName.bind(this)}
+								onFocus={this.onFocusClientName.bind(this)}
+								onChange={this.onChangeClientName.bind(this)}
+							/>
+						</FormItem>
+						<FormItem
+							label="客户简称"
+						>
+							<Input size="default"
+								placeholder="选填，32个字符以内"
+								onChange={this.onChangeClientShortName.bind(this)}
 							/>
 						</FormItem>
 					</Form>
@@ -249,34 +373,21 @@ class SubClientTable extends React.Component {
 					expandedRowRender={(record) => {
 						return authTree;
 					}}
-				>
+				>	
 					<Column
-						title="客户简称"
+						title="客户全称"
 						dataIndex="name"
 						sorter={(a, b)=>{
 							return (a.name.length - b.name.length);
 						}}
-						render={(text, record, index)=>{
-							return <EditableTableCell
-								type="input"
-								value={text}
-							></EditableTableCell>
-						}}
 					/>
 					<Column
-						title="客户全称"
-						dataIndex="note"
+						title="客户简称"
+						dataIndex="shortName"
 						sorter={(a, b)=>{
-							return (a.note.length - b.note.length);
-						}}
-						render={(text, record, index)=>{
-							return <EditableTableCell
-								type="input"
-								value={text}
-							></EditableTableCell>
+							return (a.shortName.length - b.shortName.length);
 						}}
 					/>
-					
 					<Column
 						title="账号数量"
 						dataIndex="accountNum"
@@ -293,9 +404,22 @@ class SubClientTable extends React.Component {
 					/>
 					<Column
 						title="创建时间"
-						dataIndex="regTime"
+						dataIndex="createTime"
 						sorter={(a, b)=>{
-							return (a.regTime.length - b.regTime.length);
+							return (a.createTime.length - b.createTime.length);
+						}}
+						render={(text)=>{
+							return moment(text).format("YYYY-MM-DD HH:mm:ss");
+						}}
+					/>
+					<Column
+						title="末次更新时间"
+						dataIndex="lastModified"
+						sorter={(a, b)=>{
+							return (a.lastModified.length - b.lastModified.length);
+						}}
+						render={(text)=>{
+							return moment(text).format("YYYY-MM-DD HH:mm:ss");
 						}}
 					/>
 					<Column
