@@ -36,13 +36,19 @@ class SubClientTable extends React.Component {
             isLoading: false,
             data: [],
             pagination: {
+                total: 0,
+                showSizeChanger: true,
+                pageSizeOptions: ['6', '15', '30', '50'],
                 defaultCurrent: 1,
                 defaultPageSize: 6,
+                current: 1,
                 pageSize: 6,
-                onChange: (current, pageSize) => {
-                    this.onPageChange(current, pageSize);
-                }
             },
+            sorter: {
+                sortby: 'lastModified',
+                order: -1
+            },
+            search: '',
             dlgTitle: '',
             dlgVisible: false,
             dlgLoading: false,
@@ -58,44 +64,49 @@ class SubClientTable extends React.Component {
     // 读入客户数据
     componentDidMount() {
         // 数据初始化
-        data = [];
         let { defaultCurrent, defaultPageSize } = this.state.pagination;
         this.getClientsInfo(defaultCurrent, defaultPageSize);
     }
-    getClientsInfo(current, pageSize) {
+    getClientsInfo(current, pageSize, sortby = 'lastModified', order = -1, search = 'undefined') {
         // 获取客户信息
+        data = [];
         this.setState({ isLoading: true, });
-        setTimeout(() => {
-            let url = `https://test.weiquaninfo.cn/mongo/clients?current=${current}&pageSize=${pageSize}`;
-            fetch(url, { method: "GET", })
-                .then(res => {
-                    let contentType = res.headers.get("Content-Type");
-                    if (res.status == 200 && contentType && contentType.includes("application/json")) {
-                        return res.json();
-                    } else {
-                        throw new Error(`status:${res.status} contentType:${contentType}`);
-                    }
-                })
-                .then(resJson => {
-                    // 返回
-                    resJson.data.map((item) => {
-                        data.push({
-                            key: item._id,
-                            name: item.name,
-                            shortName: this.checkValue(item.shortName),
-                            createTime: item.createTime,
-                            lastModified: item.lastModified,
-                            accountNum: 0,
-                            devNum: 0,
-                        })
-                    });
-                    this.setState({ isLoading: false, data: data });
-                })
-                .catch(error => {
-                    alert(`查询客户信息失败：${error.message}`);
-                    this.setState({ isLoading: false });
-                })
-        }, 500)
+        let url = `https://test.weiquaninfo.cn/mongo/clients?current=${current}&pageSize=${pageSize}&sortby=${sortby}&order=${order}&search=${search}`;
+        fetch(url, { method: "GET", })
+            .then(res => {
+                let contentType = res.headers.get("Content-Type");
+                if (res.status == 200 && contentType && contentType.includes("application/json")) {
+                    return res.json();
+                } else {
+                    throw new Error(`status:${res.status} contentType:${contentType}`);
+                }
+            })
+            .then(resJson => {
+                // 数据
+                resJson.data.map((item) => {
+                    data.push({
+                        key: item._id,
+                        name: item.name,
+                        shortName: this.checkValue(item.shortName),
+                        createTime: item.createTime,
+                        lastModified: item.lastModified,
+                        accountNum: 0,
+                        devNum: 0,
+                    })
+                });
+                // 分页
+                let pagination = this.state.pagination;
+                pagination.total = resJson.total;
+                this.setState({
+                    isLoading: false,
+                    data: data,
+                    pagination: pagination
+                });
+            })
+            .catch(error => {
+                alert(`查询客户信息失败：${error.message}`);
+                this.setState({ isLoading: false });
+            })
     }
 
     // 检查客户名称是否可用（新增客户时）
@@ -153,58 +164,14 @@ class SubClientTable extends React.Component {
     // 新增或修改客户
     dlgOk() {
         this.setState({ dlgLoading: true });
-        setTimeout(() => {
-            if (this.state.dlgTitle == "新增客户") {
-                if (this.state.validateNameStatus != "success") {
-                    this.setState({ dlgLoading: false, validateNameStatus: 'error' })
-                } else {
-                    // 新增客户
-                    let url = `https://test.weiquaninfo.cn/mongo/clients`;
-                    fetch(url, {
-                            method: "POST",
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                name: this.state.clientName,
-                                shortName: this.state.clientShortName
-                            }),
-                        })
-                        .then(res => {
-                            let contentType = res.headers.get("Content-Type");
-                            if (res.status == 201 && contentType && contentType.includes("application/json")) {
-                                return res.json();
-                            } else {
-                                throw new Error(`status:${res.status} contentType:${contentType}`);
-                            }
-                        })
-                        .then(resJson => {
-                            // 返回成功数据
-                            data.unshift({
-                                key: resJson._id,
-                                name: resJson.name,
-                                shortName: typeof(resJson.shortName) == 'undefined' ? '' : resJson.shortName,
-                                createTime: resJson.createTime,
-                                lastModified: resJson.lastModified,
-                                accountNum: 0,
-                                devNum: 0,
-                            })
-                            this.setState({
-                                dlgLoading: false,
-                                dlgVisible: false,
-                                data: data,
-                            });
-                            message.success("已成功新增客户");
-                        })
-                        .catch(error => {
-                            alert(`新增客户失败：${error.message}`);
-                        })
-                }
-            } else if (this.state.dlgTitle == "修改客户") {
-                // 修改客户
-                let url = `https://test.weiquaninfo.cn/mongo/clients?id=${this.state.editID}`;
+        if (this.state.dlgTitle == "新增客户") {
+            if (this.state.validateNameStatus != "success") {
+                this.setState({ dlgLoading: false, validateNameStatus: 'error' })
+            } else {
+                // 新增客户
+                let url = `https://test.weiquaninfo.cn/mongo/clients`;
                 fetch(url, {
-                        method: "PUT",
+                        method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
                         },
@@ -222,30 +189,55 @@ class SubClientTable extends React.Component {
                         }
                     })
                     .then(resJson => {
-                        let newData = {
-                            key: resJson._id,
-                            name: resJson.name,
-                            shortName: typeof(resJson.shortName) == 'undefined' ? '' : resJson.shortName,
-                            createTime: resJson.createTime,
-                            lastModified: resJson.lastModified,
-                            accountNum: 0,
-                            devNum: 0,
-                        }
-                        data.splice(this.state.editIndex, 1);
-                        data.unshift(newData);
+                        let { current, pageSize } = this.state.pagination;
+                        let { sortby, order } = this.state.sorter;
+                        this.getClientsInfo(current, pageSize, sortby, order, this.state.search);
                         this.setState({
                             dlgLoading: false,
                             dlgVisible: false,
-                            data: data,
                         });
-                        message.success("已成功更新客户信息");
+                        message.success("已成功新增客户");
                     })
                     .catch(error => {
-                        alert(`更新客户信息失败：${error.message}`);
-                        this.setState({ isLoading: false });
+                        alert(`新增客户失败：${error.message}`);
                     })
             }
-        }, 500)
+        } else if (this.state.dlgTitle == "修改客户") {
+            // 修改客户
+            let url = `https://test.weiquaninfo.cn/mongo/clients?id=${this.state.editID}`;
+            fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: this.state.clientName,
+                        shortName: this.state.clientShortName
+                    }),
+                })
+                .then(res => {
+                    let contentType = res.headers.get("Content-Type");
+                    if (res.status == 201 && contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error(`status:${res.status} contentType:${contentType}`);
+                    }
+                })
+                .then(resJson => {
+                    let { current, pageSize } = this.state.pagination;
+                    let { sortby, order } = this.state.sorter;
+                    this.getClientsInfo(current, pageSize, sortby, order, this.state.search);
+                    this.setState({
+                        dlgLoading: false,
+                        dlgVisible: false,
+                    });
+                    message.success("已成功更新客户信息");
+                })
+                .catch(error => {
+                    alert(`更新客户信息失败：${error.message}`);
+                    this.setState({ isLoading: false });
+                })
+        }
     }
 
     // 删除客户
@@ -255,9 +247,10 @@ class SubClientTable extends React.Component {
             .then(res => {
                 let contentType = res.headers.get("Content-Type");
                 if (res.status == 204) {
-                    // 删除成功（前端删除）
-                    data.splice(index, 1);
-                    this.setState({ data: data });
+                    // 删除成功
+                    let { current, pageSize } = this.state.pagination;
+                    let { sortby, order } = this.state.sorter;
+                    this.getClientsInfo(current, pageSize, sortby, order, this.state.search);
                     message.success("已成功删除客户");
                 } else {
                     throw new Error(`status:${res.status} contentType:${contentType}`);
@@ -288,35 +281,44 @@ class SubClientTable extends React.Component {
             dlgTitle: '修改客户',
             dlgVisible: true,
             clientName: record.name,
-            clientShortName: record.shortName,
+            clientShortName: (record.shortName == "-") ? '' : record.shortName,
             editID: record.key,
             editIndex: index,
             validateNameStatus: '',
         })
     }
 
-
     // 关闭对话框
     dlgCancel() {
         this.setState({ dlgVisible: false, });
     }
 
-    // 点击下一页或者前一页
-    onPageChange(current, pageSize) {
-        alert(`${current}, ${pageSize}`);
+    // 表格排序、筛选和分页变化时触发
+    onTableChange(pagination, filters, sorter) {
+        // 分页和排序处理
+        let { current, pageSize } = pagination;
+        let sortby = typeof(sorter.field) != "undefined" ? sorter.field : "lastModified";
+        let order = typeof(sorter.order) != "undefined" ? sorter.order : -1;
+        order = (order == "ascend") ? 1 : -1;
+        let sorterTmp = { sortby: sortby, order: order };
+        this.setState({ pagination: pagination, sorter: sorterTmp });
+        // 获取数据
+        this.getClientsInfo(current, pageSize, sortby, order, this.state.search);
     }
-    // 修改每页显示记录数量
-    onChangePageSize(value) {
-        let pagination = this.state.pagination;
-        if (value == "all") {
-            // 显示所有
-            pagination.pageSize = this.state.data.length;
-            this.setState({ pagination: pagination });
-        } else {
-            // 显示一页内容
-            pagination.pageSize = parseInt(value);
-            this.setState({ pagination: pagination });
-        }
+
+    // 点击搜索
+    onSearch(value) {
+        this.setState({ search: value });
+        this.getClientsInfo(this.state.pagination.current,
+            this.state.pagination.pageSize,
+            this.state.sorter.sortby,
+            this.state.sorter.order,
+            value);
+    }
+
+    // 搜索框实时输入
+    onSearchChange(e) {
+        this.setState({ search: e.target.value })
     }
 
     //
@@ -377,19 +379,13 @@ class SubClientTable extends React.Component {
                     </div>
                     <div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
                         <Search
-                            placeholder="请输入搜索内容"
-                            onSearch={value => console.log(value)}
+                            placeholder="客户全称/简称搜索"
+                            onSearch={this.onSearch.bind(this)}
                             enterButton
                             style={{marginLeft: 10}}
+                            value={this.state.search}
+                            onChange={this.onSearchChange.bind(this)}
                         />
-                        <div>
-                            <Select defaultValue="6" onChange={this.onChangePageSize.bind(this)} style={{width: 80}}>
-                                <Option value="6">6</Option>
-                                <Option value="15">15</Option>
-                                <Option value="30">30</Option>
-                                <Option value="50">50</Option>
-                            </Select>
-                        </div>
                     </div>
                 </div>
                 <Modal
@@ -483,41 +479,40 @@ class SubClientTable extends React.Component {
                     expandedRowRender={(record) => {
                         return authTree;
                     }}
+                    onChange={this.onTableChange.bind(this)}
                 >   
                     <Column
                         title="客户全称"
                         dataIndex="name"
-                        sorter={(a, b)=>{
-                            return (a.name.length - b.name.length);
-                        }}
+                        // sorter={(a, b)=>{
+                        //     return (a.name.length - b.name.length);
+                        // }}
                     />
                     <Column
                         title="客户简称"
                         dataIndex="shortName"
-                        sorter={(a, b)=>{
-                            return (a.shortName.length - b.shortName.length);
-                        }}
+                        // sorter={(a, b)=>{
+                        //     return (a.shortName.length - b.shortName.length);
+                        // }}
                     />
                     <Column
                         title="账号数量"
                         dataIndex="accountNum"
-                        sorter={(a, b)=>{
-                            return (a.accountNum.length - b.accountNum.length);
-                        }}
+                        // sorter={(a, b)=>{
+                        //     return (a.accountNum.length - b.accountNum.length);
+                        // }}
                     />
                     <Column
                         title="设备数量"
                         dataIndex="devNum"
-                        sorter={(a, b)=>{
-                            return (a.devNum.length - b.devNum.length);
-                        }}
+                        // sorter={(a, b)=>{
+                        //     return (a.devNum.length - b.devNum.length);
+                        // }}
                     />
                     <Column
                         title="创建时间"
                         dataIndex="createTime"
-                        sorter={(a, b)=>{
-                            return (a.createTime.length - b.createTime.length);
-                        }}
+                        sorter={true}
                         render={(text)=>{
                             return moment(text).format("YYYY-MM-DD HH:mm:ss");
                         }}
@@ -525,9 +520,7 @@ class SubClientTable extends React.Component {
                     <Column
                         title="末次更新时间"
                         dataIndex="lastModified"
-                        sorter={(a, b)=>{
-                            return (a.lastModified.length - b.lastModified.length);
-                        }}
+                        sorter={true}
                         render={(text)=>{
                             return moment(text).format("YYYY-MM-DD HH:mm:ss");
                         }}
