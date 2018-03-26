@@ -83,14 +83,14 @@ class SubClientTable extends React.Component {
             })
             .then(resJson => {
                 // 数据
-                resJson.data.map((item) => {
+                resJson.data.map((item, index) => {
                     data.push({
                         key: item._id,
                         name: item.name,
                         shortName: this.checkValue(item.shortName),
                         createTime: item.createTime,
                         lastModified: item.lastModified,
-                        accountNum: 0,
+                        accountNum: typeof(item.accountNum) == "undefined" ? 0 : item.accountNum,
                         devNum: 0,
                     })
                 });
@@ -336,8 +336,11 @@ class SubClientTable extends React.Component {
     }
 
     // 
-    onSubAccount() {
-        this.props.history.push('/subAccount');
+    onSubAccount(record) {
+        this.props.history.push('/subAccount', {
+            clientKey: record.key,
+            clientName: record.name
+        });
     }
 
     //
@@ -498,6 +501,9 @@ class SubClientTable extends React.Component {
                     <Column
                         title="账号数量"
                         dataIndex="accountNum"
+                        render={(text, record)=>{
+                            return <a href="javascript:;" onClick={this.onSubAccount.bind(this, record)}>{text}</a>;
+                        }}
                         // sorter={(a, b)=>{
                         //     return (a.accountNum.length - b.accountNum.length);
                         // }}
@@ -532,7 +538,7 @@ class SubClientTable extends React.Component {
                             return <div>
                                 <a href="javascript:;" onClick={this.onEditClient.bind(this, record, index)}>修改</a>
                                 <Divider type="vertical" />
-                                <a href="javascript:;" onClick={this.onSubAccount.bind(this)}>账号管理</a>
+                                <a href="javascript:;" onClick={this.onSubAccount.bind(this, record)}>账号管理</a>
                                 <Divider type="vertical" />
                                 <Popconfirm title="确认删除此客户吗？" onConfirm={this.onDelClient.bind(this, record.key, index)}
                                     okText="确认" cancelText="取消">

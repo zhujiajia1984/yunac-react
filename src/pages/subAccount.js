@@ -1,16 +1,16 @@
 import React from 'react';
 import PageLayoutContainer from '../components/PageLayoutContainer';
-import SubAccountTable from '../components/SubAccountTable';
+import SubAccountTable from '../components/Account/SubAccountTable';
 
 //
 export default class SubAccount extends React.Component {
-	//
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return (
-			<PageLayoutContainer 
+    //
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <PageLayoutContainer 
 				selMenu={["客户管理"]}
 				subMenu={["设备管理", "用户管理", "系统管理"]}
 				menuTops={[
@@ -26,6 +26,6 @@ export default class SubAccount extends React.Component {
 					</div>
 				</div>
 			</PageLayoutContainer>
-		);
-	}
+        );
+    }
 }
