@@ -10,7 +10,8 @@ import {
     Row,
     Col,
     Modal,
-    Popconfirm
+    Popconfirm,
+    Form
 } from 'antd';
 import EditableTableCell from '../../components/EditableTableCell';
 import { withRouter } from 'react-router';
@@ -22,6 +23,7 @@ let data = [];
 const Option = Select.Option;
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
+const FormItem = Form.Item;
 message.config({
     top: 100,
     duration: 2,
@@ -42,10 +44,13 @@ class SubAccountTable extends React.Component {
                 defaultCurrent: 1,
                 defaultPageSize: 6,
                 pageSize: 6,
+                showSizeChanger: true,
+                pageSizeOptions: ['6', '15', '30', '50'],
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
             },
             sorter: {
                 sortby: '_id',
-                order: 1
+                order: -1
             },
             isBtnLoading: false,
             dlgTitle: '',
@@ -55,10 +60,18 @@ class SubAccountTable extends React.Component {
                 clientId: '',
                 clientName: ''
             },
+            curAccountInfo: {
+                accountName: '',
+                userName: '',
+                id: '',
+            },
+            validateNameStatus: '',
+            validateNameHelp: '',
+            search: '',
         }
     }
 
-    //
+    // 初始化account信息
     componentDidMount() {
         let { clientKey, clientName } = this.props.location.state;
         if (typeof(clientKey) == 'undefined' || typeof(clientName) == 'undefined') {
@@ -116,35 +129,160 @@ class SubAccountTable extends React.Component {
 
     }
 
+    // account保存（新增/修改）
+    dlgOk() {
+        let { accountName, userName } = this.state.curAccountInfo;
+        let regex = /^1\d{10}$/;
+        if (!regex.test(accountName)) {
+            this.setState({
+                validateNameStatus: 'error',
+                validateNameHelp: '请输入正确的11位手机号码'
+            });
+            return;
+        }
+        this.setState({ dlgLoading: true });
+        if (this.state.dlgTitle == "新增账号") {
+            // 新增账号
+            let { clientId, clientName } = this.state.clientInfo;
+            let url = `https://test.weiquaninfo.cn/mongo/accounts`;
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        accountName: accountName,
+                        userName: userName,
+                        clientId: clientId
+                    }),
+                })
+                .then(res => {
+                    let contentType = res.headers.get("Content-Type");
+                    if (res.status == 201 && contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error(`status:${res.status} contentType:${contentType}`);
+                    }
+                })
+                .then(resJson => {
+                    let { current, pageSize } = this.state.pagination;
+                    let { sortby, order } = this.state.sorter;
+                    this.getAccountsInfo(clientId, clientName, current, pageSize, sortby, order, this.state.search);
+                    this.setState({
+                        dlgLoading: false,
+                        dlgVisible: false,
+                        validateNameStatus: '',
+                        validateNameHelp: ''
+                    });
+                    message.success("已成功新增账号");
+                })
+                .catch(error => {
+                    alert(`新增客户失败：${error.message}`);
+                })
+        } else if (this.state.dlgTitle == "修改账号") {
+            // 修改账号
+            let { clientId, clientName } = this.state.clientInfo;
+            let { id, accountName, userName } = this.state.curAccountInfo;
+            let url = `https://test.weiquaninfo.cn/mongo/accounts?id=${id}`;
+            fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        accountName: accountName,
+                        userName: userName
+                    }),
+                })
+                .then(res => {
+                    let contentType = res.headers.get("Content-Type");
+                    if (res.status == 201 && contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error(`status:${res.status} contentType:${contentType}`);
+                    }
+                })
+                .then(resJson => {
+                    let { current, pageSize } = this.state.pagination;
+                    let { sortby, order } = this.state.sorter;
+                    this.getAccountsInfo(clientId, clientName, current, pageSize, sortby, order, this.state.search);
+                    this.setState({
+                        dlgLoading: false,
+                        dlgVisible: false,
+                        validateNameStatus: '',
+                        validateNameHelp: ''
+                    });
+                    message.success("已成功更新账号信息");
+                })
+                .catch(error => {
+                    alert(`更新账号信息失败：${error.message}`);
+                    this.setState({ isLoading: false });
+                })
+        }
+    }
+
+    // 修改账号和使用者名称
+    onChangeAccountName(e) {
+        let curAccountInfo = this.state.curAccountInfo;
+        curAccountInfo.accountName = e.target.value;
+        this.setState({ curAccountInfo: curAccountInfo });
+    }
+    onChangeUserName(e) {
+        let curAccountInfo = this.state.curAccountInfo;
+        curAccountInfo.userName = e.target.value;
+        this.setState({ curAccountInfo: curAccountInfo });
+    }
+
     // 新增账号
     onAddAccount() {
+        let curAccountInfo = {
+            accountName: '',
+            userName: ''
+        }
         this.setState({
             dlgTitle: '新增账号',
             dlgVisible: true,
+            curAccountInfo: curAccountInfo
         })
     }
 
-    //
-    onEditAccount() {
+    // 编辑账号
+    onEditAccount(record) {
+        let curAccountInfo = {
+            accountName: record.accountName,
+            userName: record.userName,
+            id: record.key
+        }
         this.setState({
             dlgTitle: '修改账号',
             dlgVisible: true,
+            curAccountInfo: curAccountInfo,
+            validateNameStatus: '',
+            validateNameHelp: '',
         })
     }
 
-    onDelAccount() {
-        message.success("已成功删除账号");
-    }
-
-    //
-    dlgOk() {
-        this.setState({ dlgLoading: true });
-        setTimeout(() => {
-            this.setState({
-                dlgLoading: false,
-                dlgVisible: true,
+    // 删除账号
+    onDelAccount(id) {
+        let url = `https://test.weiquaninfo.cn/mongo/accounts?id=${id}`;
+        fetch(url, { method: "DELETE", })
+            .then(res => {
+                let contentType = res.headers.get("Content-Type");
+                if (res.status == 204) {
+                    // 删除成功
+                    let { clientId, clientName } = this.state.clientInfo;
+                    let { current, pageSize } = this.state.pagination;
+                    let { sortby, order } = this.state.sorter;
+                    this.getAccountsInfo(clientId, clientName, current, pageSize, sortby, order, this.state.search);
+                    message.success("已成功删除账号");
+                } else {
+                    throw new Error(`status:${res.status} contentType:${contentType}`);
+                }
             })
-        }, 500)
+            .catch(error => {
+                alert(`删除客户失败：${error.message}`);
+                this.setState({ isLoading: false });
+            })
     }
 
     //
@@ -152,26 +290,32 @@ class SubAccountTable extends React.Component {
         this.setState({ dlgVisible: false });
     }
 
-    // 修改pageSize
-    onChangePageSize(value) {
-        let pagination = this.state.pagination;
-        pagination.pageSize = parseInt(value);
-        this.onTableChange(pagination, "", this.state.sorter);
-    }
-
     // 表格排序、筛选和分页变化时触发
     onTableChange(pagination, filters, sorter) {
         // 分页和排序处理
         let { current, pageSize } = pagination;
         let { clientId, clientName } = this.state.clientInfo;
-        // let sortby = typeof(sorter.field) != "undefined" ? sorter.field : "lastModified";
-        // let order = typeof(sorter.order) != "undefined" ? sorter.order : -1;
-        // order = (order == "ascend") ? 1 : -1;
-        // let sorterTmp = { sortby: sortby, order: order };
-        // this.setState({ pagination: pagination, sorter: sorterTmp });
-        this.setState({ pagination: pagination });
+        let sortby = typeof(sorter.field) != "undefined" ? sorter.field : "lastModified";
+        let order = typeof(sorter.order) != "undefined" ? sorter.order : -1;
+        order = (order == "ascend") ? 1 : -1;
+        let sorterTmp = { sortby: sortby, order: order };
+        this.setState({ pagination: pagination, sorter: sorterTmp });
         // // 获取数据
-        this.getAccountsInfo(clientId, clientName, current, pageSize);
+        this.getAccountsInfo(clientId, clientName, current, pageSize, sortby, order);
+    }
+
+    // 点击搜索
+    onSearch(value) {
+        let { clientId, clientName } = this.state.clientInfo;
+        this.setState({ search: value });
+        this.getAccountsInfo(
+            clientId,
+            clientName,
+            this.state.pagination.current,
+            this.state.pagination.pageSize,
+            this.state.sorter.sortby,
+            this.state.sorter.order,
+            value);
     }
 
     //
@@ -182,7 +326,6 @@ class SubAccountTable extends React.Component {
             this.setState({ isBtnLoading: false });
         }, 500)
     }
-
 
     //
     render() {
@@ -216,7 +359,8 @@ class SubAccountTable extends React.Component {
 			</div>
         )
         // 获取客户信息
-        let { clientId, clientName } = this.state.clientInfo;
+        let { accountName, userName } = this.state.curAccountInfo;
+        let { clientName, clientId } = this.state.clientInfo;
         return (
             <div>
 				<div style={{marginTop: 16, marginBottom: 16, display: 'flex', flex: 1}}>
@@ -228,19 +372,11 @@ class SubAccountTable extends React.Component {
 					</div>
 					<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
 						<Search
-							placeholder="请输入搜索内容"
-							onSearch={value => console.log(value)}
+							placeholder="请输入账号/使用者名称"
+							onSearch={this.onSearch.bind(this)}
 							enterButton
 							style={{marginLeft: 10}}
 						/>
-						<div>
-							<Select defaultValue="6" onChange={this.onChangePageSize.bind(this)} style={{width: 80}}>
-								<Option value="6">6</Option>
-								<Option value="15">15</Option>
-								<Option value="30">30</Option>
-								<Option value="50">50</Option>
-							</Select>
-						</div>
 					</div>
 				</div>
 				<Modal
@@ -253,32 +389,35 @@ class SubAccountTable extends React.Component {
 					destroyOnClose={true}
 					confirmLoading={this.state.dlgLoading}
 				>
-					<Row gutter={16} style={{display: 'flex', alignItems: 'center'}}>
+					<Form layout="inline" className="FormAddClient">
+                        <FormItem
+                            label="账号名称"
+                            labelCol={{span: 6}}
+                            wrapperCol={{span: 18}}
+                            validateStatus={this.state.validateNameStatus}
+                            help={this.state.validateNameHelp}
+                        >
+                            <Input size="default"
+                                placeholder="必填，11位数字（手机号）"
+                                onChange={this.onChangeAccountName.bind(this)}
+                            	value={accountName}
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="使用者名称"
+                            labelCol={{span: 6}}
+                            wrapperCol={{span: 18}}
+                        >
+                            <Input size="default"
+                                placeholder="选填，32个字符以内"
+                                onChange={this.onChangeUserName.bind(this)}
+                                value={userName}
+                            />
+                        </FormItem>
+                    </Form>
+					<Row style={{display: 'flex', marginTop: 24}}>
 						<Col span={6} style={{textAlign: 'right'}}>
-							<span>账号名称：</span>
-						</Col>
-						<Col span={14}>
-							{
-								(this.state.dlgTitle == "新增账号")?
-								<Input placeholder="11位手机号"/>:
-								<span>15209876543</span>
-							}
-						</Col>
-					</Row>
-					<Row gutter={16} style={{display: 'flex', alignItems: 'center', marginTop: 24}}>
-						<Col span={6} style={{textAlign: 'right'}}>
-							<span>使用者名称：</span>
-						</Col>
-						<Col span={14}>
-							<Input 
-								defaultValue={(this.state.dlgTitle == "新增账号")?"":"测试1"}
-								placeholder="使用者名称"
-							 />
-						</Col>
-					</Row>
-					<Row gutter={16} style={{display: 'flex', marginTop: 24}}>
-						<Col span={6} style={{textAlign: 'right'}}>
-							<span>账号权限：</span>
+							<span>账号权限:</span>
 						</Col>
 						<Col span={14}>
 							<Tree
@@ -337,16 +476,10 @@ class SubAccountTable extends React.Component {
 					<Column
 						title="账号名称"
 						dataIndex="accountName"
-						sorter={(a, b)=>{
-							return (a.accountName.length - b.accountName.length);
-						}}
 					/>
 					<Column
 						title="使用者名称"
 						dataIndex="userName"
-						sorter={(a, b)=>{
-							return (a.userName.length - b.userName.length);
-						}}
 						render={(text)=>{
                             return (text=="")?"-":text;
                         }}
@@ -364,9 +497,7 @@ class SubAccountTable extends React.Component {
 					<Column
 						title="创建时间"
 						dataIndex="createTime"
-						sorter={(a, b)=>{
-							return (a.createTime.length - b.createTime.length);
-						}}
+						sorter={true}
 						render={(text)=>{
                             return moment(text).format("YYYY-MM-DD HH:mm:ss");
                         }}
@@ -376,11 +507,11 @@ class SubAccountTable extends React.Component {
 						dataIndex="action"
 						render={(text, record, index)=>{
 							return <div>
-								<a href="javascript:;" onClick={this.onEditAccount.bind(this)}>修改</a>
+								<a href="javascript:;" onClick={this.onEditAccount.bind(this, record)}>修改</a>
 								<Divider type="vertical" />
 								<a href="javascript:;">后台</a>
 								<Divider type="vertical" />
-								<Popconfirm title="确认删除此账号吗？" onConfirm={this.onDelAccount.bind(this)}
+								<Popconfirm title="确认删除此账号吗？" onConfirm={this.onDelAccount.bind(this, record.key)}
 									okText="确认" cancelText="取消">
 									<a href="javascript:;">删除</a>
 								</Popconfirm>

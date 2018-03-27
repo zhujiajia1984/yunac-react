@@ -43,6 +43,7 @@ class SubClientTable extends React.Component {
                 defaultPageSize: 6,
                 current: 1,
                 pageSize: 6,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
             },
             sorter: {
                 sortby: 'lastModified',
@@ -241,7 +242,7 @@ class SubClientTable extends React.Component {
     }
 
     // 删除客户
-    onDelClient(id, index) {
+    onDelClient(id) {
         let url = `https://test.weiquaninfo.cn/mongo/clients?id=${id}`;
         fetch(url, { method: "DELETE", })
             .then(res => {
@@ -407,6 +408,8 @@ class SubClientTable extends React.Component {
                             validateStatus={this.state.validateNameStatus}
                             help={this.state.validateNameHelp}
                             hasFeedback={true}
+                            labelCol={{span: 6}}
+                            wrapperCol={{span: 18}}
                         >
                             <Input size="default"
                                 placeholder="必填，64个字符以内"
@@ -418,6 +421,8 @@ class SubClientTable extends React.Component {
                         </FormItem>
                         <FormItem
                             label="客户简称"
+                            labelCol={{span: 6}}
+                            wrapperCol={{span: 18}}
                         >
                             <Input size="default"
                                 placeholder="选填，32个字符以内"
@@ -501,9 +506,9 @@ class SubClientTable extends React.Component {
                     <Column
                         title="账号数量"
                         dataIndex="accountNum"
-                        render={(text, record)=>{
-                            return <a href="javascript:;" onClick={this.onSubAccount.bind(this, record)}>{text}</a>;
-                        }}
+                        // render={(text, record)=>{
+                        //     return <a href="javascript:;" onClick={this.onSubAccount.bind(this, record)}>{text}</a>;
+                        // }}
                         // sorter={(a, b)=>{
                         //     return (a.accountNum.length - b.accountNum.length);
                         // }}
