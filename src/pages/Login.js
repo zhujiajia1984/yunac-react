@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginMain from '../components/LoginMain';
-import LoginFormWrapper from '../components/LoginForm';
+import LoginMain from '../components/Login/LoginMain';
+import LoginFormWrapper from '../components/Login/LoginForm';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import WxLogin from 'WxLogin';
@@ -12,80 +12,80 @@ const TOKEN_NEW = 100;
 
 //
 export default class Login extends React.Component {
-	//
-	constructor(props) {
-		super(props);
-		this.state = {
-			isLoginLoading: false,
-			tabToggle: 'account',
-		}
-	}
+    //
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoginLoading: false,
+            tabToggle: 'account',
+        }
+    }
 
-	// 账号登录
-	onSubmitForm(values) {
-		// alert(values.userName + '\n' + values.password);
-		this.setState({ isLoginLoading: true });
-		this.authServer(values);
-		// setTimeout(() => {
-		// 	this.setState({ isLoginLoading: false });
-		// 	this.props.history.push('/index');
-		// }, 500);
-	}
+    // 账号登录
+    onSubmitForm(values) {
+        // alert(values.userName + '\n' + values.password);
+        this.setState({ isLoginLoading: true });
+        this.authServer(values);
+        // setTimeout(() => {
+        // 	this.setState({ isLoginLoading: false });
+        // 	this.props.history.push('/index');
+        // }, 500);
+    }
 
-	// 忘记密码
-	onForgetPwd() {
-		this.props.history.push('/pwdReset');
-	}
+    // 忘记密码
+    onForgetPwd() {
+        this.props.history.push('/pwdReset');
+    }
 
-	// 登录认证
-	authServer(values) {
-		let url = "https://weiquaninfo.cn/testYunAc/login";
-		let token = localStorage.getItem("token");
-		fetch(url, {
-				method: "POST",
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					userName: values.userName,
-					password: values.password,
-					token: token
-				}),
-			})
-			.then(res => {
-				let contentType = res.headers.get("Content-Type");
-				if (res.status == 200 && contentType && contentType.includes("application/json")) {
-					return res.json();
-				} else {
-					throw new Error(`status:${res.status} contentType:${contentType}`);
-				}
-			})
-			.then(resJson => {
-				// 返回
-				switch (resJson.code) {
-					case TOKEN_OK:
-						this.setState({ isLoginLoading: false });
-						this.props.history.push('/index');
-						break;
-					case TOKEN_NEW:
-						this.setState({ isLoginLoading: false });
-						localStorage.setItem("token", resJson.token);
-						this.props.history.push('/index');
-						break;
-					default:
-						alert("unknow code");
-				}
-			})
-			.catch(error => {
-				this.setState({ isLoginLoading: false });
-				alert(`登录失败：${error.message}`);
-			})
-	}
+    // 登录认证
+    authServer(values) {
+        let url = "https://weiquaninfo.cn/testYunAc/login";
+        let token = localStorage.getItem("token");
+        fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userName: values.userName,
+                    password: values.password,
+                    token: token
+                }),
+            })
+            .then(res => {
+                let contentType = res.headers.get("Content-Type");
+                if (res.status == 200 && contentType && contentType.includes("application/json")) {
+                    return res.json();
+                } else {
+                    throw new Error(`status:${res.status} contentType:${contentType}`);
+                }
+            })
+            .then(resJson => {
+                // 返回
+                switch (resJson.code) {
+                    case TOKEN_OK:
+                        this.setState({ isLoginLoading: false });
+                        this.props.history.push('/index');
+                        break;
+                    case TOKEN_NEW:
+                        this.setState({ isLoginLoading: false });
+                        localStorage.setItem("token", resJson.token);
+                        this.props.history.push('/index');
+                        break;
+                    default:
+                        alert("unknow code");
+                }
+            })
+            .catch(error => {
+                this.setState({ isLoginLoading: false });
+                alert(`登录失败：${error.message}`);
+            })
+    }
 
-	//
-	render() {
-		return (
-			<div>
+    //
+    render() {
+        return (
+            <div>
 				<LoginMain>
 					<Tabs defaultActiveKey="account" className="loginMain">
 						<TabPane tab="账号登录" key="account">
@@ -114,21 +114,21 @@ export default class Login extends React.Component {
 					</Tabs>
 				</LoginMain>
 			</div>
-		);
-	}
+        );
+    }
 }
 
 //
 Login.propTypes = {
-	history: PropTypes.object,
+    history: PropTypes.object,
 };
 
 // style
 const styles = {
-	footer: {
-		display: 'flex',
-		flexDirection: 'column-reverse',
-		alignItems: 'center',
-		flex: 1,
-	},
+    footer: {
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        alignItems: 'center',
+        flex: 1,
+    },
 }
