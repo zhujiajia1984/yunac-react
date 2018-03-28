@@ -15,62 +15,62 @@ const siderWidth = 256;
 const MENU_LOGOUT_KEY = 'logout';
 const MENU_PROFILE_KEY = 'profile';
 const noticeData = [{
-		title: 'AP离线报警',
-		desp: 'mac ef:12:23:45:55:87  2017-12-29 14:23',
-	},
-	{
-		title: '探针离线报警',
-		desp: 'mac ef:12:23:45:55:87 2017-12-26 14:23',
-	},
-	{
-		title: '显示日期最近的3条报警',
-		desp: 'mac ef:12:23:45:55:87 2017-12-22 14:23',
-	},
+        title: 'AP离线报警',
+        desp: 'mac ef:12:23:45:55:87  2017-12-29 14:23',
+    },
+    {
+        title: '探针离线报警',
+        desp: 'mac ef:12:23:45:55:87 2017-12-26 14:23',
+    },
+    {
+        title: '显示日期最近的3条报警',
+        desp: 'mac ef:12:23:45:55:87 2017-12-22 14:23',
+    },
 ];
 
 //
 class PageLayout extends React.Component {
-	//
-	constructor(props) {
-		super(props);
-		this.state = {
-			collapsed: this.props.collapsed,
-		}
-	}
+    //
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: this.props.collapsed,
+        }
+    }
 
-	//
-	onRightSysMenu(values) {
-		switch (values.key) {
-			case MENU_LOGOUT_KEY:
-				this.props.history.push("/");
-				break;
-			case MENU_PROFILE_KEY:
-				this.props.history.push("/profile");
-				break;
-			default:
-				alert("menu unknow");
-		}
-	}
+    //
+    onRightSysMenu(values) {
+        switch (values.key) {
+            case MENU_LOGOUT_KEY:
+                this.props.history.push("/");
+                break;
+            case MENU_PROFILE_KEY:
+                this.props.history.push("/profile");
+                break;
+            default:
+                alert("menu unknow");
+        }
+    }
 
-	// 显示or隐藏侧边栏
-	toggleSider() {
-		this.setState({ collapsed: !this.state.collapsed });
-	}
+    // 显示or隐藏侧边栏
+    toggleSider() {
+        this.setState({ collapsed: !this.state.collapsed });
+    }
 
-	//
-	onTopMenuChange(item) {
-		this.props.history.push(`/${item.key}`);
-	}
+    //
+    onTopMenuChange(item) {
+        this.props.history.push(`/${item.key}`);
+    }
 
-	//
-	msgCenter() {
-		this.props.history.push('/msgCenter');
-	}
+    //
+    msgCenter() {
+        this.props.history.push('/msgCenter');
+    }
 
-	//
-	render() {
-		const noticeContent = (
-			<div>
+    //
+    render() {
+        const noticeContent = (
+            <div>
 						<List
 							itemLayout="horizontal"
 							dataSource={noticeData}
@@ -89,9 +89,9 @@ class PageLayout extends React.Component {
 							<span className="noticeFootBtn">查看更多</span>
 						</div>
 					</div>
-		)
-		return (
-			<Layout style={{minHeight: '100vh'}}>
+        )
+        return (
+            <Layout style={{minHeight: '100vh'}}>
 				<Sider
 					width={siderWidth}
 					trigger={null}
@@ -199,29 +199,29 @@ class PageLayout extends React.Component {
 					</Footer>
 				</Layout>
 			</Layout>
-		);
-	}
+        );
+    }
 }
 
 // 
 PageLayout.propTypes = {
-	children: PropTypes.element.isRequired,
-	menuData: PropTypes.array.isRequired,
-	selMenu: PropTypes.array.isRequired,
-	subMenu: PropTypes.array.isRequired,
-	location: PropTypes.object,
-	history: PropTypes.object,
-	defaultMenuKey: PropTypes.string,
-	menuTops: PropTypes.array,
-	collapsed: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    menuData: PropTypes.array.isRequired,
+    selMenu: PropTypes.array.isRequired,
+    subMenu: PropTypes.array.isRequired,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    defaultMenuKey: PropTypes.string,
+    menuTops: PropTypes.array,
+    collapsed: PropTypes.bool,
 };
 
 PageLayout.defaultProps = {
-	selMenu: ['系统首页'],
-	subMenu: [],
-	defaultMenuKey: '',
-	menuTops: [],
-	collapsed: false,
+    selMenu: ['系统首页'],
+    subMenu: [],
+    defaultMenuKey: '',
+    menuTops: [],
+    collapsed: false,
 };
 
 //

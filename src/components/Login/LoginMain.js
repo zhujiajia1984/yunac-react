@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon, Tabs } from 'antd';
-import cssMain from '../../pages/Login.css';
+import '../../pages/Login.css';
 import PropTypes from 'prop-types';
 
 // const
@@ -31,7 +30,6 @@ export default class LoginMain extends React.Component {
 						<div style={styles.body}>
 							{this.props.children}
 						</div>
-						
 					</div>
 				</div>
 			</div>

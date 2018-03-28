@@ -6,7 +6,8 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
-    devtool: 'none',
+    mode: 'production',
+    // devtool: 'none',
     externals: {
         'WxLogin': 'WxLogin',
         'BMap': 'BMap',

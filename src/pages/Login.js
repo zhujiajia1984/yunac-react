@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginMain from '../components/Login/LoginMain';
-import LoginFormWrapper from '../components/Login/LoginForm';
+import LoginForm from '../components/Login/LoginFormNew';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import WxLogin from 'WxLogin';
@@ -16,16 +16,21 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoginLoading: false,
             tabToggle: 'account',
         }
+    }
+
+    // 初始化
+    componentDidMount() {
+        // console.log("login");
     }
 
     // 账号登录
     onSubmitForm(values) {
         // alert(values.userName + '\n' + values.password);
-        this.setState({ isLoginLoading: true });
-        this.authServer(values);
+        // this.setState({ isLoginLoading: true });
+        this.props.history.push('/index');
+        // this.authServer(values);
         // setTimeout(() => {
         // 	this.setState({ isLoginLoading: false });
         // 	this.props.history.push('/index');
@@ -89,12 +94,8 @@ export default class Login extends React.Component {
 				<LoginMain>
 					<Tabs defaultActiveKey="account" className="loginMain">
 						<TabPane tab="账号登录" key="account">
-							<LoginFormWrapper
-								onSubmitForm={this.onSubmitForm.bind(this)}
-								onForgetPwd={this.onForgetPwd.bind(this)}
-								isLoading={this.state.isLoginLoading}
-							>
-							</LoginFormWrapper>
+                            <LoginForm>
+                            </LoginForm>
 							<div style={styles.footer}>CloudAC ©2017 Created by DoubleCom</div>
 						</TabPane>
 						<TabPane tab="微信登录" key="wx" className="qrCodeWrapper">
