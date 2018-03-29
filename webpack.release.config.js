@@ -1,13 +1,13 @@
 const path = require('path');
 
 module.exports = {
-    entry: ['whatwg-fetch', './src/index.js'],
+    entry: {
+        main: ['whatwg-fetch', './src/index.js']
+    },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
-    mode: 'production',
-    // devtool: 'none',
     externals: {
         'WxLogin': 'WxLogin',
         'BMap': 'BMap',

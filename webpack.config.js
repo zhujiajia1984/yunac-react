@@ -3,13 +3,12 @@ const path = require('path');
 module.exports = {
     // entry: ['whatwg-fetch', './src/index.js'],
     entry: {
-        app: ['whatwg-fetch', './src/index.js']
+        main: ['whatwg-fetch', './src/index.js']
     },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
-    mode: 'development',
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         port: 18198,
