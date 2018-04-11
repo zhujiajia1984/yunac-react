@@ -171,7 +171,7 @@ class LoginFormNew extends React.Component {
                             onClick={this.onForgetPwd.bind(this)}
                             style={{float: 'right', color:"rgba(0, 0, 0, 0.25)"}}
                         >忘记密码</a>
-                </FormItem>
+                    </FormItem>
                 </Form>
             </div>
         );
